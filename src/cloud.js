@@ -25,10 +25,21 @@ export function createCloudAccount({space,storage,onSnapshot,onUser,onStatus,can
  const checked=async promise=>{const result=await promise;if(result.error)throw result.error;return result.data;};
  return {
   configured,
+  passwordRecoveryEnabled:cloudConfig.passwordRecoveryEnabled===true,
   async start(){if(!client)return;const {data,error}=await client.auth.getSession();if(error)onStatus({state:'error',message:error.message});await changeUser(data?.session?.user,'INITIAL_SESSION');},
   async signIn(email,password){return checked(client.auth.signInWithPassword({email,password}));},
-  async signUp(email,password){return checked(client.auth.signUp({email,password,options:{emailRedirectTo:redirect}}));},
-  async resetPassword(email){return checked(client.auth.resetPasswordForEmail(email,{redirectTo:redirect}));},
+  async signUp(email,password){
+   if(cloudConfig.emailConfirmationRequired===false){
+    const response=await fetch(cloudConfig.url+'/auth/v1/settings',{headers:{apikey:cloudConfig.publishableKey},signal:AbortSignal.timeout(10000)});
+    if(!response.ok)throw Error('Не удалось проверить доступность регистрации. Попробуйте ещё раз.');
+    const settings=await response.json();
+    if(settings.mailer_autoconfirm!==true)throw Error('Регистрация без письма ещё не включена на сервере. Владелец сайта должен завершить настройку входа.');
+   }
+   const data=await checked(client.auth.signUp({email,password,options:{emailRedirectTo:redirect}}));
+   if(cloudConfig.emailConfirmationRequired===false&&!data.session)throw Error('Аккаунт не открылся. Попробуйте войти с этим email и паролем; если вход не удаётся, обратитесь к владельцу сайта.');
+   return data;
+  },
+  async resetPassword(email){if(!cloudConfig.passwordRecoveryEnabled)throw Error('Восстановление пароля по почте пока не подключено.');return checked(client.auth.resetPasswordForEmail(email,{redirectTo:redirect}));},
   async updatePassword(password){const data=await checked(client.auth.updateUser({password}));recovery=false;onUser(user,{recovery});return data;},
   async signOut(){await store?.sync();await checked(client.auth.signOut({scope:'local'}));},
   async save(snapshot){if(store)return store.save(snapshot);return storage.put('state','main',snapshot);},

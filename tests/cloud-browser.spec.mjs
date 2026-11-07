@@ -19,12 +19,14 @@ test('legacy duplicate migrates to one visible course and one completed count wi
  await page.goto('./#completed');await expect(page.locator('[data-course]')).toHaveCount(1);await page.reload();await expect(page.locator('[data-course]')).toHaveCount(1);
  await page.goto('./#overview');await expect(page.locator('.learning-total>strong')).toContainText('Пройдено 1 из 28');
 });
-function mockCloud(){
- const rows=new Map();
+function mockCloud({confirmationRequired=false}={}){
+ const rows=new Map(),requests=[];
  const user=email=>({id:email.startsWith('alice')?'11111111-1111-4111-8111-111111111111':'22222222-2222-4222-8222-222222222222',email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{},created_at:new Date().toISOString()});
- return {rows,async install(context){await context.route('https://fxmpqblmthcxtobsjcgr.supabase.co/**',async route=>{
+ return {rows,requests,async install(context){await context.route('https://fxmpqblmthcxtobsjcgr.supabase.co/**',async route=>{
   const request=route.request(),url=new URL(request.url());let status=200,result={};
-  if(url.pathname==='/auth/v1/token'){
+  requests.push(url.pathname);
+  if(url.pathname==='/auth/v1/settings')result={mailer_autoconfirm:!confirmationRequired,disable_signup:false,external:{email:true}};
+  else if(url.pathname==='/auth/v1/token'||url.pathname==='/auth/v1/signup'){
    const u=user(request.postDataJSON().email),jwt=[{alg:'HS256',typ:'JWT'},{sub:u.id,exp:Math.floor(Date.now()/1000)+3600,aud:'authenticated'},'signature'].map(v=>Buffer.from(typeof v==='string'?v:JSON.stringify(v)).toString('base64url')).join('.');
    result={access_token:jwt,refresh_token:'refresh-'+u.id,token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,user:u};
   }else if(url.pathname.startsWith('/rest/v1/')){
@@ -58,4 +60,19 @@ test('email login transfers guest data once, syncs a second device and isolates 
   await page.goto('./#account');await page.locator('[data-action="account-logout"]').click();await expect(page.locator('#account-form')).toBeVisible();await login(page,'bob@example.test');await page.goto('./#courses');await expect(page.locator('[data-course]')).toHaveCount(0);await page.reload();await expect(page.locator('[data-course]')).toHaveCount(0);
   await phone.reload();await expect(phone.locator('.account-panel [data-cloud-status]')).toHaveText('Сохранено в облаке');expect(await phone.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);await phone.screenshot({path:'test-results/account-mobile.png',animations:'disabled'});
  }finally{await mobile.close();}
+});
+test('registration opens an empty personal account immediately without email or recovery requests',async({page,context})=>{
+ const cloud=mockCloud();await cloud.install(context);await page.goto('./#account');
+ await expect(page.locator('[data-mode="reset"]')).toHaveCount(0);
+ await page.locator('[data-action="account-mode"][data-mode="signup"]').click();
+ await page.locator('#account-form [name="email"]').fill('new@example.test');await page.locator('#account-form [name="password"]').fill('test-password-123');
+ await page.locator('#account-form [type="submit"]').click();await expect(page.getByRole('button',{name:'Выйти',exact:true})).toBeVisible();
+ await page.goto('./#courses');await expect(page.locator('[data-course]')).toHaveCount(0);await page.reload();await expect(page.locator('[data-course]')).toHaveCount(0);
+ await page.goto('./#account');await expect(page.locator('.catalog-heading')).toContainText('new@example.test');
+ expect(cloud.requests.filter(path=>path==='/auth/v1/signup')).toHaveLength(1);expect(cloud.requests).not.toContain('/auth/v1/recover');
+});
+test('registration reports an unfinished server setting before creating an unconfirmed user',async({page,context})=>{
+ const cloud=mockCloud({confirmationRequired:true});await cloud.install(context);await page.goto('./#account');await page.locator('[data-action="account-mode"][data-mode="signup"]').click();
+ await page.locator('#account-form [name="email"]').fill('new@example.test');await page.locator('#account-form [name="password"]').fill('test-password-123');await page.locator('#account-form [type="submit"]').click();
+ await expect(page.locator('[data-auth-message]')).toContainText('Регистрация без письма ещё не включена');expect(cloud.requests).not.toContain('/auth/v1/signup');await expect(page.locator('#account-form [type="submit"]')).toBeEnabled();
 });
