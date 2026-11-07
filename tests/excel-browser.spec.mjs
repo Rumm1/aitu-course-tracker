@@ -51,7 +51,9 @@ async function seedAndImport(page){
  await page.locator('[data-course="K063"] [data-action="pin"]').click();
  await importWorkbook(page,{capture:true});
  await page.goto('./#courses');
- await expect(page.locator('[data-course]')).toHaveCount(110);
+ await expect(page.locator('[data-scope="all"]')).toContainText('109');
+ await expect(page.locator('[data-scope="additional"]')).toHaveAttribute('aria-pressed','true');
+ await expect(page.locator('[data-course]')).toHaveCount(1);
 }
 
 test('Excel adds one local course, applies completed rows and preserves existing marks without duplicates',async({page})=>{
@@ -59,13 +61,15 @@ test('Excel adds one local course, applies completed rows and preserves existing
  await seedAndImport(page);
  const added=page.locator('[data-course]').filter({has:page.getByRole('heading',{name:'Network Defense Basics',exact:true})});
  await expect(added).toHaveCount(1);await expect(added.locator('.status')).toContainText('Пройден');
+ await page.locator('[data-scope="all"]').click();
  await expect(page.locator('[data-course="U3"] .status')).toContainText('Пройден');
  await expect(page.locator('[data-course="G1"] .status')).toContainText('В процессе');
  await expect(page.locator('[data-course="K063"] [data-action="pin"]')).toHaveAttribute('aria-label','Снять приоритет');
- await page.reload();await expect(page.locator('[data-course]')).toHaveCount(110);
+ await page.locator('[data-scope="additional"]').click();
+ await page.reload();await expect(page.locator('[data-course]')).toHaveCount(1);
  await expect(added.locator('.status')).toContainText('Пройден');
  await importWorkbook(page);await page.goto('./#courses');
- await expect(page.locator('[data-course]')).toHaveCount(110);await expect(added).toHaveCount(1);
+ await expect(page.locator('[data-course]')).toHaveCount(1);await expect(added).toHaveCount(1);
  await page.goto('./#completed');
  await expect(page.getByRole('heading',{name:defaultSubjects.SEC,level:2,exact:true})).toBeVisible();
  await expect(page.getByRole('heading',{name:'Network Defense Basics',exact:true})).toBeVisible();
@@ -99,11 +103,12 @@ test('friends start independently and JSON backup transfers local Excel course m
   await expect(friend.locator('[data-action="apply-import"]')).toBeVisible();
   for(const box of await friend.locator('[data-accept]').all())await box.check();
   await friend.locator('[data-action="apply-import"]').click();await friend.goto(new URL('#courses',page.url()).href);
-  await expect(friend.locator('[data-course]')).toHaveCount(110);
+  await expect(friend.locator('[data-course]')).toHaveCount(109);
+  await expect(friend.locator('[data-course="K063"] [data-action="pin"]')).toHaveAttribute('aria-label','Снять приоритет');
+  await friend.locator('[data-scope="additional"]').click();
   const added=friend.locator('[data-course]').filter({has:friend.getByRole('heading',{name:'Network Defense Basics',exact:true})});
   await expect(added).toHaveCount(1);await expect(added.locator('.status')).toContainText('Пройден');
-  await expect(friend.locator('[data-course="K063"] [data-action="pin"]')).toHaveAttribute('aria-label','Снять приоритет');
-  await friend.reload();await expect(friend.locator('[data-course]')).toHaveCount(110);
+  await friend.reload();await expect(friend.locator('[data-course]')).toHaveCount(1);
  }finally{await friendContext.close();}
 });
 

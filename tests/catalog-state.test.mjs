@@ -1,10 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {reconcileCatalog} from '../src/catalog-state.js';
+import {reconcileCatalog,catalogSections} from '../src/catalog-state.js';
 import {progress} from '../src/core.js';
 import {cleanFilters,readFilters} from '../src/catalog-filters.js';
 const course={id:'U3',title:'Architecture',url:'https://www.coursera.org/learn/architecture',kind:'course',subjects:['ARCH'],inPlan:true};
 const duplicate={...course,id:'local-duplicate',title:'Old architecture title',url:course.url+'/home/welcome?tracking=x',subjects:['CAP']};
+test('starter and additional sections do not change progress or plan membership',()=>{
+ const extra={...course,id:'local-extra-course',url:'https://www.coursera.org/learn/extra',inPlan:false},catalog=[course,extra],records={[extra.id]:{status:'done',inPlan:true}};
+ const groups=catalogSections(catalog,new Set(['U3']));assert.deepEqual(groups.main,[course]);assert.deepEqual(groups.additional,[extra]);assert.equal(progress(catalog,records).total,2);assert.equal(progress(catalog,records).done,1);
+});
+test('a personal catalog without a starter set keeps its imported courses in the main section',()=>{
+ const personal=[duplicate];assert.deepEqual(catalogSections(personal,new Set(['U3']),false),{main:personal,additional:[]});
+ assert.equal(cleanFilters({scope:'additional'}).scope,'additional');
+});
 test('same course URL has one card/count and preserves completion, certificate and all subjects',()=>{
  const result=reconcileCatalog([course],[duplicate],{U3:{status:'active',percent:67},[duplicate.id]:{status:'done',certificateUrl:'https://www.coursera.org/account/accomplishments/verify/CERT123',pinned:true}},{subjectAssignments:{[duplicate.id]:['SEC']}});
  assert.equal(result.catalog.length,1);assert.equal(result.customCourses.length,0);assert.equal(result.records.U3.status,'done');assert.ok(result.records.U3.certificateUrl);assert.equal(result.records.U3.pinned,true);assert.deepEqual(result.settings.subjectAssignments.U3,['ARCH','SEC']);assert.equal(progress(result.catalog,result.records).done,1);

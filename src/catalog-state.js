@@ -2,6 +2,12 @@ import {mergeBackupRecord} from './core.js';
 import {canonicalCourseURL} from './course-identity.js';
 
 const unique=values=>[...new Set(values.filter(Boolean))];
+// A personal catalog without a starter set has no separate "additional" section.
+export function catalogSections(catalog,baseIds,hasStarter=true){
+ if(!hasStarter)return {main:catalog,additional:[]};
+ const main=[],additional=[];for(const course of catalog)(baseIds.has(course.id)?main:additional).push(course);
+ return {main,additional};
+}
 export function catalogIdentity(course){
  const url=canonicalCourseURL(course.url);
  if(!url||course.linkState==='requires-check')return 'id:'+course.id;

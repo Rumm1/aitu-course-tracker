@@ -1,6 +1,19 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
 const catalog=JSON.parse(fs.readFileSync(new URL('../src/catalog.json',import.meta.url),'utf8'));
+test('109 starter and 78 additional items stay separate while plan, completion and saved filters remain intact',async({page})=>{
+ await page.goto('./#courses');
+ await page.evaluate(async()=>{
+  const courses=Array.from({length:78},(_,i)=>({id:'local-additional-'+i,title:'Additional Course '+i,url:'https://www.coursera.org/learn/additional-course-'+i,kind:'course',subjects:['SEC'],inPlan:false}));
+  const request=indexedDB.open('aitu-course-tracker:v1:/aitu-course-tracker/');await new Promise(resolve=>request.onsuccess=resolve);const db=request.result,transaction=db.transaction('state','readwrite');
+  transaction.objectStore('state').put({settings:{catalogMode:'curated'},customCourses:courses,records:{U3:{status:'done'},'local-additional-0':{status:'done',certificateUrl:'https://www.coursera.org/account/accomplishments/verify/EXTRA123'},'local-additional-1':{status:'active',percent:67,inPlan:true}}},'main');await new Promise(resolve=>transaction.oncomplete=resolve);db.close();
+ });
+ await page.reload();await expect(page.locator('[data-course]')).toHaveCount(109);await expect(page.locator('[data-scope="all"]')).toHaveText('Основные 109');await expect(page.locator('[data-scope="additional"]')).toHaveText('Дополнительные 78');await expect(page.locator('[data-scope="plan"]')).toContainText('29');await expect(page.locator('.sidebar nav a[aria-label="Курсы"] small')).toHaveText('109');
+ await page.locator('[data-scope="additional"]').click();await expect(page.locator('[data-course]')).toHaveCount(78);await expect(page.locator('[data-course="local-additional-0"] .status')).toContainText('Пройден');await expect(page.locator('[data-course="local-additional-1"] .course-progress-label')).toHaveText('В процессе · 67%');await expect(page.locator('.list-meta')).toContainText('из 78 в дополнительных');await expect(page.locator('[data-course="U3"]')).toHaveCount(0);
+ await page.locator('#search').fill('Additional Course 77');await expect(page.locator('[data-course]')).toHaveCount(1);await page.reload();await expect(page.locator('[data-scope="additional"]')).toHaveAttribute('aria-pressed','true');await expect(page.locator('#search')).toHaveValue('Additional Course 77');await expect(page.locator('[data-course]')).toHaveCount(1);await page.locator('[data-action="reset"]').first().click();
+ await page.screenshot({path:'test-results/additional-desktop.png',animations:'disabled'});await page.setViewportSize({width:360,height:900});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:'test-results/additional-mobile.png',animations:'disabled'});
+ await page.locator('[data-scope="plan"]').click();await expect(page.locator('[data-course]')).toHaveCount(29);await expect(page.locator('[data-course="local-additional-1"]')).toBeVisible();await page.goto('./#completed');await expect(page.locator('[data-course]')).toHaveCount(2);await expect(page.locator('[data-course="local-additional-0"] a.primary')).toHaveAttribute('href',/EXTRA123/);
+});
 test('filters, scope, type and search survive reload; totals reflect the selected scope',async({page})=>{
  await page.goto('./#courses');await page.locator('[data-scope="plan"]').click();
  await page.locator('#search').fill('Architecture');await page.locator('#subject').selectOption('ARCH');await page.locator('#kind').selectOption('course');await page.locator('#hide').check();

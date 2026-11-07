@@ -137,3 +137,6 @@ main { margin-left:var(--sidebar-width); transition:margin-left .22s var(--ease)
 .account-link svg{flex:none;width:18px}
 [data-sidebar="collapsed"] .account-link span{display:none}
 [data-cloud-status][data-state="error"]{color:var(--warning)}
+.catalog-toolbar .tabs{flex-wrap:wrap;column-gap:20px;row-gap:0;min-width:0}
+.catalog-toolbar .tabs button{white-space:nowrap}
+.catalog-scope-note{margin:-8px 0 20px;color:var(--muted);font-size:12px;line-height:1.6}

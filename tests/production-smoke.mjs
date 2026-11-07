@@ -53,6 +53,13 @@ try{
  assert.equal(response?.status(),200,'Public Pages response');
  await expect(page.locator('h1')).toHaveText('Мои курсы');
  await expect(page.locator('[data-course]')).toHaveCount(expectedCourses);
+ if(expectedCourses===109){
+  await expect(page.locator('[data-scope="all"]')).toHaveText('Основные 109');
+  await expect(page.locator('[data-scope="additional"]')).toHaveText('Дополнительные 0');
+  await page.locator('[data-scope="additional"]').click();await expect(page.locator('[data-course]')).toHaveCount(0);
+  await expect(page.getByText('Дополнительных курсов пока нет',{exact:true})).toBeVisible();
+  await page.locator('[data-scope="all"]').click();await expect(page.locator('[data-course]')).toHaveCount(109);
+ }
  await expect.poll(()=>page.locator('.sidebar .brand-symbol').evaluate(image=>image.complete&&image.naturalWidth>0)).toBe(true);
  await page.getByRole('button',{name:'Свернуть панель',exact:true}).click();
  await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
