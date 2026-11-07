@@ -87,6 +87,10 @@ try{
  if(await page.locator('html').getAttribute('data-theme')!=='light')await page.locator('[data-action="theme"]').click();
  await expect(page.locator('html')).toHaveAttribute('data-theme','light');await settleAppearance(page);await noOverflow(page);
  await page.screenshot({path:path.join(output,'production-mobile-light.png')});
+ await page.locator('#search').fill('Architecture');await page.reload();await expect(page.locator('#search')).toHaveValue('Architecture');
+ const accountURL=new URL(site);accountURL.hash='account';await page.goto(accountURL.href);
+ await expect(page.locator('#account-form [name="email"]')).toBeVisible();await expect(page.locator('#account-form [name="password"]')).toBeVisible();await noOverflow(page);
+ await page.screenshot({path:path.join(output,'production-account-mobile.png')});
  assert.deepEqual(errors,[],'Production page emitted JavaScript errors');
  console.log(JSON.stringify({site:site.href,httpStatus:200,courses:expectedCourses,subjectNames,extensionVersion:manifest.version,extensionBytes:bytes.length,zipStatus:200,mobileOverflow:false,pageErrors:errors,screenshots:['test-results/production-desktop-dark.png','test-results/production-mobile-light.png']},null,2));
 }finally{await browser.close();}

@@ -196,8 +196,10 @@ test('list view keeps catalog actions, filtering and saved layout',async({page})
  await expect(page.locator('#catalog-grid')).toHaveClass(/list-view/);
  await page.reload();
  await expect(page.locator('#catalog-grid')).toHaveClass(/list-view/);
- await expect(page.locator('[data-course]')).toHaveCount(109);
+ await expect(page.locator('#search')).toHaveValue('Software Architecture');
  await expect(card.locator('.status')).toContainText('В процессе');
+ await page.locator('[data-action="reset"]').first().click();
+ await expect(page.locator('[data-course]')).toHaveCount(109);
  await page.locator('[data-layout="grid"]').click();
  await expect(page.locator('#catalog-grid')).not.toHaveClass(/list-view/);
  await expect(page.locator('[data-course]')).toHaveCount(109);
