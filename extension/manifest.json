@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Курс за курсом — прогресс Coursera",
+  "version": "1.0.0",
+  "description": "Локально переносит видимые результаты из вашего Моего обучения Coursera в личный трекер. Без паролей, cookies и API.",
+  "permissions": ["storage"],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "Курс за курсом", "default_popup": "popup.html"},
+  "content_scripts": [
+    {
+      "matches": ["https://www.coursera.org/my-learning*"],
+      "js": ["coursera-content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://rumm1.github.io/*"],
+      "include_globs": ["https://rumm1.github.io/aitu-course-tracker/*"],
+      "js": ["tracker-content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "content_security_policy": {"extension_pages": "script-src 'self'; object-src 'none'"}
+}

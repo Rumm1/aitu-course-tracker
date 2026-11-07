@@ -1,7 +1,7 @@
 export const DEADLINE = Date.parse('2026-11-11T00:00:00+05:00');
 export const subjects = {CAP:'Дипломный проект',SEC:'Информационная безопасность',QA:'Качество и тестирование ПО',ARCH:'Архитектура ПО',TE:'Технологическое предпринимательство'};
 export const kinds = {course:'Курс',project:'Проект',specialization:'Специализация','professional-certificate':'Профессиональная программа'};
-export const statuses = {new:'Не начат',active:'В работе',done:'Пройден'};
+export const statuses = {new:'Не начат',active:'В процессе',done:'Пройден'};
 export const normalize = s => String(s ?? '').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}+#]+/gu,' ').trim();
 export function courseURL(s) {try {const u=new URL(s);if(u.protocol!=='https:'||u.username||u.password||u.port)return null;u.search='';u.hash='';u.hostname=u.hostname.toLowerCase().replace(/^www\./,'');u.pathname=u.pathname.replace(/\/+$/,'');return u.href;}catch{return null;}}
 export function certificateURL(s,course) {
@@ -19,6 +19,22 @@ export function stateFor(c,records) {return {status:'new',inPlan:!!c.inPlan,...r
 export function inVariant(c,variant) {if(variant==='ALL')return true;return !(variant==='UML'&&/Только Мукатаев/.test(c.seScope)||variant==='GO'&&/Только Сма/.test(c.seScope));}
 export function plan(catalog,records,variant='ALL') {return catalog.filter(c=>stateFor(c,records).inPlan&&inVariant(c,variant));}
 export function progress(catalog,records,variant='ALL') {const selected=plan(catalog,records,variant);const done=selected.filter(c=>stateFor(c,records).status==='done').length;return {total:selected.length,done,percent:selected.length?Math.round(done/selected.length*100):0};}
+const realPercent=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=100;
+const taskCounts=record=>Number.isSafeInteger(record.completedTasks)&&Number.isSafeInteger(record.totalTasks)&&record.totalTasks>0&&record.completedTasks>=0&&record.completedTasks<=record.totalTasks;
+function measuredProgress(record={}) {
+ if(taskCounts(record)&&['tasks','по заданиям'].includes(record.progressSource))return {percent:Math.round(record.completedTasks/record.totalTasks*1000)/10,tasks:true};
+ if(realPercent(record.percent))return {percent:record.percent,tasks:false};
+ if(taskCounts(record))return {percent:Math.round(record.completedTasks/record.totalTasks*1000)/10,tasks:true};
+ return {percent:null,tasks:false};
+}
+export function courseProgress(record={}) {
+ if(record.status==='done')return {percent:100,label:'Пройден',source:record.progressSource||null};
+ if(record.status!=='active')return {percent:0,label:'Не начат',source:null};
+ const measured=measuredProgress(record);
+ if(measured.percent===null)return {percent:null,label:'В процессе · процент пока неизвестен',source:null};
+ const percent=measured.percent,formatted=percent.toLocaleString('ru-RU',{maximumFractionDigits:1});
+ return {percent,label:`В процессе · ${formatted}%${measured.tasks?' по заданиям':''}`,source:measured.tasks?'по заданиям':record.progressSource||null};
+}
 export function search(c,q) {return normalize([c.id,c.title,c.provider,...(c.also||[]),...c.subjects.flatMap(s=>[s,subjects[s]])].join(' ')).includes(normalize(q));}
 export function hours(c) {const entries=Object.entries(c.hoursBySource||{});if(!entries.length)return 'Нет данных о часах';return entries.map(([source,v])=>`${String(v).replace(/^~/,'примерно ').replace(/^≥/,'не менее ')} ч · ${source}`).join(' / ');}
 export function matchRecord(row,catalog) {
@@ -30,19 +46,38 @@ export function matchRecord(row,catalog) {
 }
 export function mergeRecord(current,incoming) {
  const next={...current};let conflict=false;
+ const statusRank={new:0,active:1,done:2};
  // Starting a course by hand must not block a later certificate. Only an
  // explicit correction (or a legacy reset to "new") protects the status.
  const protectedStatus=current.manualOverride||current.manual&&current.status==='new';
  if(protectedStatus && incoming.source!=='manual' && incoming.status && incoming.status!==current.status) conflict=true;
- else if(incoming.status==='done'||!current.status||current.status!=='done'&&incoming.status)next.status=incoming.status||current.status;
+ else if(Object.hasOwn(statusRank,incoming.status)&&(!current.status||statusRank[incoming.status]>=(statusRank[current.status]??0)))next.status=incoming.status;
  if(incoming.certificateUrl) {if(current.certificateUrl&&current.certificateUrl!==incoming.certificateUrl)conflict=true;else next.certificateUrl=incoming.certificateUrl;}
  if(incoming.completedAt&&!current.completedAt)next.completedAt=incoming.completedAt;
  if(incoming.completedAt&&current.completedAt&&incoming.completedAt!==current.completedAt)conflict=true;
  for(const key of ['pdfKey','grade','source','documentKey'])if(incoming[key]!==undefined && (!protectedStatus||key==='pdfKey')){
   // A partial or older report must not replace the provenance of completion.
-  if(current.status==='done'&&incoming.status!=='done'&&['grade','source','documentKey'].includes(key))continue;
+  if((statusRank[incoming.status]??-1)<(statusRank[current.status]??-1)&&['grade','source','documentKey'].includes(key))continue;
   if(key==='grade'&&current.grade!==undefined&&current.grade!==incoming.grade){conflict=true;continue;}
   next[key]=incoming[key];
+ }
+ // Only explicit active results carry measured partial progress. Opening a
+ // course, elapsed time, a grade or a missing row cannot manufacture it.
+ if(incoming.status==='active'&&next.status==='active'&&!(protectedStatus&&current.status!==incoming.status)){
+  const before=measuredProgress(current),received=measuredProgress(incoming);
+  const oldTime=validDate(current.progressUpdatedAt),newTime=validDate(incoming.progressUpdatedAt);
+  const stale=oldTime&&newTime&&Date.parse(newTime)<Date.parse(oldTime);
+  if(received.percent!==null&&!stale&&(before.percent===null||received.percent>=before.percent)){
+   if(received.tasks){delete next.percent;next.completedTasks=incoming.completedTasks;next.totalTasks=incoming.totalTasks;next.progressSource='по заданиям';}
+   else {
+    next.percent=incoming.percent;
+    if(taskCounts(incoming)){next.completedTasks=incoming.completedTasks;next.totalTasks=incoming.totalTasks;}
+    else {delete next.completedTasks;delete next.totalTasks;}
+    if(typeof incoming.progressSource==='string')next.progressSource=incoming.progressSource;
+    else if(before.tasks)delete next.progressSource;
+   }
+   if(newTime)next.progressUpdatedAt=newTime;
+  }
  }
  return {next,conflict};
 }
@@ -95,6 +130,10 @@ export function validateBackup(value,catalog){
  if(r.customUrl){const url=courseURL(r.customUrl);if(!url||new URL(url).hostname!=='coursera.org'||!/^\/learn\/[\w-]+\/?$/.test(new URL(url).pathname))throw Error(`Недопустимый URL курса: ${id}`);next.customUrl=url;}
  for(const k of ['source','lastOpened'])if(typeof r[k]==='string')next[k]=r[k];
  if(typeof r.grade==='string'||typeof r.grade==='number'&&Number.isFinite(r.grade))next.grade=r.grade;
+ if(Object.hasOwn(r,'percent')){if(!realPercent(r.percent))throw Error(`Неверный процент: ${id}`);next.percent=r.percent;}
+ if(Object.hasOwn(r,'completedTasks')||Object.hasOwn(r,'totalTasks')){if(!taskCounts(r))throw Error(`Неверное число заданий: ${id}`);next.completedTasks=r.completedTasks;next.totalTasks=r.totalTasks;}
+ if(typeof r.progressSource==='string')next.progressSource=r.progressSource;
+ if(r.progressUpdatedAt){if(!validDate(r.progressUpdatedAt))throw Error(`Неверная дата прогресса: ${id}`);next.progressUpdatedAt=r.progressUpdatedAt;}
  records[id]=next;
  }return records;
 }

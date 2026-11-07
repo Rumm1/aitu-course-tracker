@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {deadline,DEADLINE,progress,plan,certificateURL,mergeRecord,mergeBackupRecord,undoImportedRecord,matchRecord,validateBackup,parseCSV,search,courseURL,validDate,analyzeCertificateText} from '../src/core.js';
+import {deadline,DEADLINE,progress,plan,certificateURL,mergeRecord,mergeBackupRecord,undoImportedRecord,matchRecord,validateBackup,parseCSV,search,courseURL,validDate,analyzeCertificateText,courseProgress} from '../src/core.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../src/catalog.json',import.meta.url)));
 const relations=JSON.parse(fs.readFileSync(new URL('../src/relations.json',import.meta.url)));
 test('complete catalog and default plan',()=>{assert.equal(catalog.length,109);assert.equal(new Set(catalog.map(c=>c.id)).size,109);assert.equal(plan(catalog,{}).length,28);assert.equal(catalog.filter(c=>c.kind==='course').length,93);assert.equal(catalog.filter(c=>c.kind==='project').length,2);assert.equal(catalog.filter(c=>c.kind==='specialization').length,12);assert.equal(catalog.filter(c=>c.kind==='professional-certificate').length,2);assert.equal(catalog.filter(c=>c.linkState==='requires-check').length,3);assert(catalog.some(c=>c.url.includes('boot.dev')));assert(catalog.some(c=>c.url.includes('udemy.com')));});
@@ -48,4 +48,39 @@ test('undo document restores imported fields without erasing later personal chan
  const corrected={...after,status:'new',completedAt:undefined,manual:true,manualOverride:true,source:'Ручная отметка'};
  const result=undoImportedRecord(corrected,before,after);assert.equal(result.status,'new');assert.equal(result.source,'Ручная отметка');assert.equal(result.certificateUrl,undefined);
  assert.equal(undoImportedRecord({status:'done'},null,{status:'done'}),undefined);
+});
+
+test('course partial progress uses measured values and never opening time',()=>{
+ assert.deepEqual(courseProgress({status:'active',lastOpened:'2026-11-07T12:00:00Z'}),{percent:null,label:'В процессе · процент пока неизвестен',source:null});
+ assert.equal(courseProgress({status:'active',percent:67,progressSource:'Вставленный список'}).label,'В процессе · 67%');
+ assert.equal(courseProgress({status:'active',percent:0}).percent,0);
+ assert.equal(courseProgress({status:'active',percent:100}).label,'В процессе · 100%');
+ assert.equal(courseProgress({status:'active',percent:101}).percent,null);
+ assert.deepEqual(courseProgress({status:'new',percent:67}),{percent:0,label:'Не начат',source:null});
+ assert.equal(courseProgress({status:'done',percent:67}).percent,100);
+});
+test('task-based progress is explicit, bounded and labelled',()=>{
+ assert.deepEqual(courseProgress({status:'active',completedTasks:3,totalTasks:10}),{percent:30,label:'В процессе · 30% по заданиям',source:'по заданиям'});
+ const fromParser={status:'active',percent:30,completedTasks:3,totalTasks:10,progressSource:'tasks'};
+ assert.equal(courseProgress(fromParser).label,'В процессе · 30% по заданиям');
+ assert.equal(courseProgress(mergeRecord({status:'active'},fromParser).next).label,'В процессе · 30% по заданиям');
+ assert.equal(courseProgress({status:'active',completedTasks:2,totalTasks:3}).percent,66.7);
+ for(const record of [{completedTasks:3,totalTasks:0},{completedTasks:11,totalTasks:10},{completedTasks:-1,totalTasks:10},{completedTasks:1.5,totalTasks:10},{totalTasks:10}])assert.equal(courseProgress({status:'active',...record}).percent,null);
+});
+test('progress merge is monotonic, idempotent and preserves completed results',()=>{
+ const old={status:'active',percent:67,progressSource:'Вставленный список',progressUpdatedAt:'2026-11-07T12:00:00Z',source:'Вставленный список'};
+ for(const incoming of [{status:'active'},{status:'active',percent:30},{status:'new'},{status:'active',percent:80,progressUpdatedAt:'2026-11-06T12:00:00Z'}])assert.equal(courseProgress(mergeRecord(old,incoming).next).percent,67);
+ const received={status:'active',percent:80,progressSource:'Отчёт',progressUpdatedAt:'2026-11-07T13:00:00Z'};
+ const next=mergeRecord(old,received).next;assert.equal(next.percent,80);assert.deepEqual(mergeRecord(next,received).next,next);
+ const done={...old,status:'done',source:'Сертификат',certificateUrl:'https://www.coursera.org/verify/TEST'};
+ const preserved=mergeRecord(done,{status:'active',percent:80,source:'Неполный список'}).next;
+ assert.equal(preserved.status,'done');assert.equal(preserved.source,'Сертификат');assert.equal(preserved.certificateUrl,done.certificateUrl);assert.equal(courseProgress(preserved).percent,100);
+ const corrected=mergeRecord({status:'new',manual:true,manualOverride:true},{status:'active',percent:67,source:'Список'});assert.equal(corrected.conflict,true);assert.equal(corrected.next.status,'new');assert.equal(corrected.next.percent,undefined);
+});
+test('backups preserve valid real progress and reject invalid numeric schema',()=>{
+ const backup=records=>({app:'aitu-course-tracker',version:1,records});
+ const input={status:'active',percent:0,progressSource:'Список',progressUpdatedAt:'2026-11-07T12:00:00Z'};
+ assert.deepEqual(validateBackup(backup({U3:input}),catalog).U3,input);
+ assert.equal(validateBackup(backup({U3:{status:'active',completedTasks:3,totalTasks:10}}),catalog).U3.totalTasks,10);
+ for(const record of [{percent:-1},{percent:101},{percent:'67'},{percent:null},{percent:Infinity},{completedTasks:3},{completedTasks:3,totalTasks:0},{completedTasks:11,totalTasks:10},{progressUpdatedAt:'yesterday'}])assert.throws(()=>validateBackup(backup({U3:{status:'active',...record}}),catalog));
 });
