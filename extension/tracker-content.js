@@ -6,6 +6,14 @@ if(isTrackerURL(location.href)){
     const message=event.data;
     if(event.source!==window||event.origin!==location.origin||message?.channel!==CHANNEL||message.type!=='PROGRESS_REQUEST'||typeof message.requestId!=='string'||message.requestId.length>150)return;
     try{
+      if(Array.isArray(message.catalog)){
+        const accepted=await chrome.runtime.sendMessage({type:'SET_CATALOG',courses:message.catalog});
+        if(!accepted?.ok){
+          const current=(await chrome.storage.local.get(STORAGE_KEY))[STORAGE_KEY];
+          emit('PROGRESS_RESPONSE',{...publicCapture(current),catalogError:'Дополнительный каталог не прошёл проверку'},message.requestId);
+          return;
+        }
+      }
       const state=(await chrome.storage.local.get(STORAGE_KEY))[STORAGE_KEY];
       emit('PROGRESS_RESPONSE',publicCapture(state),message.requestId);
       // Reply with the honestly timestamped cache immediately. A fresh visible

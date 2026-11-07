@@ -1,5 +1,5 @@
 export const DEADLINE = Date.parse('2026-11-11T00:00:00+05:00');
-export const subjects = {CAP:'Дипломный проект',SEC:'Информационная безопасность',QA:'Качество и тестирование ПО',ARCH:'Архитектура ПО',TE:'Технологическое предпринимательство'};
+export const subjects = {CAP:'Capstone Project',SEC:'Information Security',QA:'Software Quality Assurance and Testing',ARCH:'Software Architecture',TE:'Technology Entrepreneurship'};
 export const kinds = {course:'Курс',project:'Проект',specialization:'Специализация','professional-certificate':'Профессиональная программа'};
 export const statuses = {new:'Не начат',active:'В процессе',done:'Пройден'};
 export const normalize = s => String(s ?? '').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}+#]+/gu,' ').trim();
@@ -35,7 +35,8 @@ export function courseProgress(record={}) {
  const percent=measured.percent,formatted=percent.toLocaleString('ru-RU',{maximumFractionDigits:1});
  return {percent,label:`В процессе · ${formatted}%${measured.tasks?' по заданиям':''}`,source:measured.tasks?'по заданиям':record.progressSource||null};
 }
-export function search(c,q) {return normalize([c.id,c.title,c.provider,...(c.also||[]),...c.subjects.flatMap(s=>[s,subjects[s]])].join(' ')).includes(normalize(q));}
+const subjectAliases={CAP:'Дипломный проект',SEC:'Информационная безопасность',QA:'Качество и тестирование ПО',ARCH:'Архитектура ПО',TE:'Технологическое предпринимательство'};
+export function search(c,q) {return normalize([c.id,c.title,c.provider,...(c.also||[]),...c.subjects.flatMap(s=>[s,subjects[s],subjectAliases[s]])].join(' ')).includes(normalize(q));}
 export function hours(c) {const entries=Object.entries(c.hoursBySource||{});if(!entries.length)return 'Нет данных о часах';return entries.map(([source,v])=>`${String(v).replace(/^~/,'примерно ').replace(/^≥/,'не менее ')} ч · ${source}`).join(' / ');}
 export function matchRecord(row,catalog) {
  if(!row||typeof row!=='object'||Array.isArray(row))return [];

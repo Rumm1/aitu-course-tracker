@@ -1,22 +1,35 @@
-import catalog from './catalog.json';
+import baseCatalog from './catalog.json';
 import relations from './relations.json';
-import {subjects,kinds,statuses,normalize,deadline,stateFor,inVariant,plan,progress,courseProgress,search,hours,certificateURL,courseURL,matchRecord,mergeRecord,mergeBackupRecord,undoImportedRecord,parseCSV,reportStatus,validDate,validateBackup} from './core.js';
+import {subjects as baseSubjects,kinds,statuses,normalize,deadline,stateFor,inVariant,plan,progress,courseProgress,search,hours,certificateURL,courseURL,matchRecord,mergeRecord,mergeBackupRecord,undoImportedRecord,parseCSV,reportStatus,validDate,validateBackup} from './core.js';
 import * as store from './storage.js';
 import {icon} from './icons.js';
 import {requestExtension,onExtensionProgress} from './extension-client.js';
+import {enhanceSelects,closeSelectMenu} from './select.js';
+import {validateLocalCourses,mergeLocalCourses} from './local-catalog.js';
+import {definitions,allDefinitions,assignedSubjects,createSubject,validateSubjectSettings} from './subjects.js';
+import {createSubjectUI} from './subject-ui.js';
+import {reconcileExtensionCatalog} from './extension-catalog.js';
 import './style.css';
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let records={},settings={variant:'ALL',owner:'',theme:'system',layout:'grid'},view='overview',query='',subject='',status='',hide=false,scope='all',directory=null,busy=false,pending=[],toastTimer,extensionState=null,extensionBusy=false;
-const nav=[['overview','overview','Обзор'],['courses','courses','Курсы'],['subjects','subjects','Предметы'],['certificates','certificate','Сертификаты']];
+let catalog=[...baseCatalog],customCourses=[],records={},settings={variant:'ALL',owner:'',theme:'system',layout:'grid'},view='overview',query='',subject='',status='',hide=false,scope='all',directory=null,busy=false,pending=[],toastTimer,extensionState=null,extensionBusy=false,pendingCatalog=[];
+const nav=[['overview','overview','Обзор'],['courses','courses','Курсы'],['completed','check','Пройденные'],['subjects','subjects','Предметы'],['certificates','certificate','Сертификаты']];
+const extraViews={setup:'Расширение и свой сайт'};
+const projectRepository=typeof __PROJECT_REPOSITORY__!=='undefined'?__PROJECT_REPOSITORY__:'Rumm1/aitu-course-tracker';
+const curatedDefault=projectRepository.toLowerCase()==='rumm1/aitu-course-tracker';
+let subjects={...baseSubjects};
+const subjectUI=createSubjectUI({getCatalog:()=>catalog,getRecords:()=>records,getSettings:()=>settings,modal,onChange:async next=>{settings=next;refreshSubjects();await save();render();}});
+const russianSubjectNames={CAP:'Дипломный проект',SEC:'Информационная безопасность',QA:'Качество и тестирование ПО',ARCH:'Архитектура ПО',TE:'Технологическое предпринимательство'};
+function refreshSubjects(){subjects=definitions(settings);if(subject&&!Object.hasOwn(subjects,subject))subject='';}
+function matchesSearch(c,value){const ids=assignedSubjects(c,settings);if(search({...c,subjects:ids},value))return true;const labels=ids.flatMap(id=>[subjects[id],russianSubjectNames[id]||'']);return normalize(labels.join(' ')).includes(normalize(value));}
 const themeKey='aitu-course-tracker:theme:'+location.pathname.replace(/\/[^/]*$/,'/');
 const systemTheme=matchMedia('(prefers-color-scheme: dark)');
 function currentTheme(){return settings.theme==='system'?(systemTheme.matches?'dark':'light'):settings.theme;}
 function themeButton(){const dark=currentTheme()==='dark';return `${icon(dark?'sun':'moon')}<span>${dark?'Светлая тема':'Тёмная тема'}</span>`;}
 function applyTheme(){
  const theme=currentTheme();document.documentElement.dataset.theme=theme;
- document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#101b1b':'#f5f6f2';
+ document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#141321':'#f5f6f2';
  try{localStorage.setItem(themeKey,settings.theme);}catch{}
  const toggle=document.querySelector('[data-action="theme"]');
  if(toggle){toggle.innerHTML=themeButton();toggle.setAttribute('aria-label',theme==='dark'?'Включить светлую тему':'Включить тёмную тему');toggle.setAttribute('aria-pressed',String(theme==='dark'));}
@@ -35,7 +48,8 @@ const linksFor=id=>allLinks.filter(row=>row.courseId===id&&(!['UML','GO'].includ
 function date(s){return s?new Date(s).toLocaleDateString('ru-RU',{timeZone:'Asia/Almaty'}):'Дата неизвестна';}
 function error(e){toast(e?.message||String(e));console.error(e);}
 function toast(message){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';t.setAttribute('role','status');document.body.append(t);}t.textContent=message;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),4500);}
-async function save(){await store.put('state','main',{records,settings});}
+function refreshCatalog(){catalog=[...(settings.catalogMode==='empty'?[]:baseCatalog),...customCourses];}
+async function save(){await store.put('state','main',{records,settings,customCourses});}
 async function change(id,patch){records[id]={...r(cById(id)),...patch};await save();render();}
 function queue(){return plan(catalog,records,settings.variant).filter(c=>r(c).status!=='done').sort((a,b)=>Number(r(b).pinned)-Number(r(a).pinned)||Number(r(b).status==='active')-Number(r(a).status==='active')||linksFor(b.id).length-linksFor(a.id).length);}
 function primary(c){const s=r(c);if(s.status==='done'&&s.certificateUrl)return `<a class="primary" href="${esc(s.certificateUrl)}" target="_blank" rel="noopener noreferrer">Открыть сертификат ↗</a>`;if(s.status==='done'&&s.pdfKey)return `<button class="primary" data-action="pdf" data-id="${c.id}">Открыть PDF ↗</button>`;if(s.status==='done')return `<button class="primary" data-action="certificate" data-id="${c.id}">Добавить ссылку</button>`;return `<a class="primary" data-action="open" data-id="${c.id}" href="${esc(openURL(c))}" target="_blank" rel="noopener noreferrer">${c.linkState==='requires-check'&&!s.customUrl?'Найти на Coursera':s.status==='active'?'Продолжить':'Открыть курс'} ↗</a>`;}
@@ -45,10 +59,10 @@ function courseProgressBar(record){
  return `<div class="course-progress ${known?'':'unknown'}" data-progress-status="${record.status}"><span class="course-progress-label">${esc(info.label)}</span><div class="course-progress-track" role="progressbar" aria-label="Прогресс курса" aria-valuemin="0" aria-valuemax="100" ${known?`aria-valuenow="${info.percent}"`:'aria-valuetext="Процент пока неизвестен"'}><i style="width:${known?info.percent:0}%"></i></div>${record.status==='active'&&record.source?`<span class="progress-source">${esc(record.source)}</span>`:''}</div>`;
 }
 function card(c){
- const s=r(c),n=linksFor(c.id).length;
- return `<article class="course ${s.status==='done'?'complete':''}" data-course="${c.id}" data-subject="${c.subjects[0]}">
+ const s=r(c),n=linksFor(c.id).length,courseSubjects=assignedSubjects(c,settings);
+ return `<article class="course ${s.status==='done'?'complete':''}" data-course="${c.id}" data-subject="${courseSubjects[0]||''}">
  <div class="card-top"><span class="provider-icon">${esc((c.provider||'C')[0])}</span><span class="eyebrow">${esc(c.provider||new URL(c.url).hostname)}<br><span class="muted">${kinds[c.kind]}</span></span><button class="icon ${s.pinned?'pinned':''}" data-action="pin" data-id="${c.id}" aria-label="${s.pinned?'Снять приоритет':'Закрепить приоритет'}" title="Приоритет">${s.pinned?'★':'☆'}</button></div>
- <div class="tags">${c.subjects.map(s=>`<span class="tag ${s.toLowerCase()}" title="${esc(subjects[s])}">${s}</span>`).join('')}<span class="status ${s.status}">${s.status==='done'?'✓ ':s.status==='active'?'● ':''}${statuses[s.status]}</span></div>
+ <div class="tags">${courseSubjects.map(id=>`<span class="tag ${id.toLowerCase()}" title="${esc(subjects[id])}">${esc(baseSubjects[id]?id:subjects[id])}</span>`).join('')}<span class="status ${s.status}">${s.status==='done'?'✓ ':s.status==='active'?'● ':''}${statuses[s.status]}</span></div>
  <div class="course-content"><h3 class="course-title">${esc(c.title)}</h3><p class="course-meta">${icon('clock')}${esc(hours(c))}</p>${n?`<p class="card-context muted small">${n} связей с темами · ${esc(c.seScope||'Несколько источников')}</p>`:''}${courseProgressBar(s)}${s.status==='done'?`<p class="small done-text">${date(s.completedAt)} · ${esc(s.source||'Ручная отметка')}${s.grade?' · Оценка: '+esc(s.grade):''}</p>`:''}</div>
  <div class="card-actions">${primary(c)}<button class="secondary" data-action="details" data-id="${c.id}">Подробнее</button></div>
  <div class="card-footer"><button class="text" data-action="plan" data-id="${c.id}">${s.inPlan?'✓ В моём плане':'＋ В план'}</button><button class="text" data-action="status" data-id="${c.id}">${s.status==='done'?'Исправить статус':s.status==='active'?'Отметить пройденным':'Начать'}</button></div>${s.status==='done'&&s.certificateUrl?`<button class="text copy" data-action="copy" data-id="${c.id}">Скопировать ссылку</button>`:''}
@@ -70,19 +84,28 @@ function overallProgress(){
 function overview(){
  const d=deadline(),q=queue(),selected=plan(catalog,records,settings.variant),active=catalog.filter(c=>r(c).status==='active').sort((a,b)=>(r(b).lastOpened||'').localeCompare(r(a).lastOpened||''))[0];
  return `<div class="page-heading"><div><p class="eyebrow">ВАШЕ ПРОСТРАНСТВО ОБУЧЕНИЯ</p><h1>Большие цели.<br><em>Небольшие шаги.</em></h1><p class="muted">Соберите знания в один понятный маршрут.</p></div><div class="overview-tools"><button class="primary" data-action="progress-check">${icon('check')} Проверить мой прогресс</button><button class="text" data-action="progress-paste">Учесть уже пройденные</button></div></div>
- <section class="hero"><div class="hero-content"><span class="light-label"><span class="live-dot"></span>${active?'СЛЕДУЮЩИЙ ШАГ':'МАРШРУТ К ВАШЕЙ ЦЕЛИ'}</span><h2>${active?esc(active.title):'Курс за курсом.<br>Всё ближе к цели.'}</h2><p>${active?esc(active.provider):`${selected.length} курсов в вашем плане. Пять направлений.<br>Начните с того, что важно сейчас.`}</p><div class="hero-footer">${active?primary(active):`<a class="primary white" href="#courses?plan">Открыть план ${icon('arrow')}</a>`}<span>Ваш следующий шаг — здесь</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit-core">${icon('mark')}</span><span class="orbit-label">learn. grow. repeat.</span></div>
+ <section class="hero"><div class="hero-content"><span class="light-label"><span class="live-dot"></span>${active?'СЛЕДУЮЩИЙ ШАГ':'МАРШРУТ К ВАШЕЙ ЦЕЛИ'}</span><h2>${active?esc(active.title):'Курс за курсом.<br>Всё ближе к цели.'}</h2><p>${active?esc(active.provider):`${selected.length} курсов в вашем плане. ${Object.keys(subjects).length} предметов.<br>Начните с того, что важно сейчас.`}</p><div class="hero-footer">${active?primary(active):`<a class="primary white" href="#courses?plan">Открыть план ${icon('arrow')}</a>`}<span>Ваш следующий шаг — здесь</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit-core">${icon('mark')}</span><span class="orbit-label">learn. grow. repeat.</span></div>
  <div class="deadline"><span class="deadline-label">БЛИЖАЙШИЙ ДЕДЛАЙН</span><span class="calendar">10 <small>НОЯБРЯ</small></span><p>До 10 ноября включительно</p><strong id="countdown">${d.expired?'Дедлайн прошёл':`${d.days} дн. <span>${d.hours} ч.</span>`}</strong><small>2026 · Казахстан, UTC+5</small></div></section>
  ${overallProgress()}${summary()}<div class="section-heading"><div><p class="eyebrow">ПОНЕМНОГУ, КАЖДЫЙ ДЕНЬ</p><h2>Очередь на сегодня <span class="heading-dot"></span></h2></div><a href="#courses?plan">Весь план ${icon('arrow')}</a></div><div class="grid">${q.slice(0,3).map(card).join('')||empty('План завершён или пока пуст','<a href="#courses">Добавить курсы →</a>')}</div>
  <section class="import-banner"><div class="badge-icon">${icon('certificate')}</div><div><h3>Ваши достижения уже с вами</h3><p>Добавьте сертификаты и сразу увидите, сколько уже пройдено.</p></div><button class="secondary" data-action="import">${icon('upload')} Учесть мои сертификаты</button></section>
  <div class="notice">${icon('check')} Статусы обновляются из ручных отметок и локального импорта. PDF остаются на вашем устройстве.</div>`;
 }
 function viewSwitch(){return `<div class="view-switch" role="group" aria-label="Вид каталога"><button data-layout="grid" aria-label="Показать карточки" aria-pressed="${settings.layout!=='list'}" class="${settings.layout!=='list'?'active':''}" title="Карточки">${icon('grid')}<span>Карточки</span></button><button data-layout="list" aria-label="Показать список" aria-pressed="${settings.layout==='list'}" class="${settings.layout==='list'?'active':''}" title="Список">${icon('list')}<span>Список</span></button></div>`;}
+function completedGroups(list){
+ const groups=new Map();for(const c of list){const key=assignedSubjects(c,settings)[0]||'other';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(c);}
+ return [...groups].map(([id,courses])=>`<section class="completed-group" data-completed-subject="${id}"><div class="completed-group-heading"><div><span class="tag ${id.toLowerCase()}">${id==='other'?'КУРСЫ':esc(baseSubjects[id]?id:subjects[id])}</span><h2>${esc(subjects[id]||'Без предмета')}</h2></div><span class="completed-count">${courses.length} пройдено</span></div><div class="grid catalog-grid ${settings.layout==='list'?'list-view':''}">${courses.map(card).join('')}</div></section>`).join('');
+}
+function completedPage(){
+ const list=catalog.filter(c=>r(c).status==='done');
+ return `<div class="page-heading catalog-heading"><div><h1>Пройденные курсы</h1><p class="muted">${list.length} завершено · распределены по основному предмету</p></div><button class="secondary" data-action="progress-paste">${icon('check')} Учесть пройденные</button></div><div class="catalog-toolbar"><p class="course-group-note">Каждый курс учитывается в общем прогрессе один раз.</p>${viewSwitch()}</div>${list.length?completedGroups(list):empty('Здесь будут пройденные курсы','<p>Вставьте список Coursera, загрузите Excel или измените статус курса.</p><button class="secondary" data-action="progress-paste">Учесть уже пройденные</button>')}`;
+}
 function courseList(){
- const list=catalog.filter(c=>(scope!=='plan'||r(c).inPlan&&inVariant(c,settings.variant))&&search(c,query)&&(!subject||c.subjects.includes(subject))&&(!status||r(c).status===status)&&(!hide||r(c).status!=='done'));
- return `<div class="page-heading"><div><p class="eyebrow">БИБЛИОТЕКА ВОЗМОЖНОСТЕЙ</p><h1>Найдите свой<br><em>следующий курс.</em></h1><p class="muted">109 курсов и программ — и место для вашего любопытства.</p></div><button class="secondary" data-action="import">${icon('upload')} Импорт результатов</button></div>
- <div class="catalog-toolbar"><div class="tabs"><button data-scope="all" class="${scope==='all'?'selected':''}">Все курсы <b>109</b></button><button data-scope="plan" class="${scope==='plan'?'selected':''}">Мой план <b>${plan(catalog,records,settings.variant).length}</b></button></div>${viewSwitch()}</div>
- <section class="filters" aria-label="Фильтры каталога"><label class="search">${icon('search')}<input id="search" type="search" placeholder="Что хотите изучить?" value="${esc(query)}" aria-label="Поиск курсов"></label><label>Направление<select id="subject"><option value="">Все направления</option>${Object.entries(subjects).map(([k,v])=>`<option value="${k}" ${subject===k?'selected':''}>${v}</option>`).join('')}</select></label><label>Статус<select id="status"><option value="">Все статусы</option>${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${status===k?'selected':''}>${v}</option>`).join('')}</select></label><label class="checkbox"><input id="hide" type="checkbox" ${hide?'checked':''}> Скрыть пройденные</label></section>
- <div class="list-meta"><span>Найдено <b>${list.length}</b> из 109</span><button class="text" data-action="reset">Сбросить фильтры</button></div><div id="catalog-grid" class="grid catalog-grid ${settings.layout==='list'?'list-view':''}">${list.map(card).join('')||empty('По этим фильтрам ничего не найдено','<button class="secondary" data-action="reset">Сбросить фильтры</button>')}</div>`;
+ const list=catalog.filter(c=>(scope!=='plan'||r(c).inPlan&&inVariant(c,settings.variant))&&matchesSearch(c,query)&&(!subject||assignedSubjects(c,settings).includes(subject))&&(!status||r(c).status===status)&&(!hide||r(c).status!=='done'));
+ const remaining=list.filter(c=>r(c).status!=='done'),done=list.filter(c=>r(c).status==='done');
+ return `<div class="page-heading catalog-heading"><div><h1>Мои курсы</h1><p class="muted">${catalog.length} в каталоге · ${plan(catalog,records,settings.variant).length} в моём плане</p></div><div class="excel-toolbar"><button class="primary" data-action="excel">${icon('upload')} Добавить из Excel</button><button class="secondary" data-action="import">Импорт результатов</button></div></div>
+ <div class="catalog-toolbar"><div class="tabs"><button data-scope="all" class="${scope==='all'?'selected':''}">Все курсы <b>${catalog.length}</b></button><button data-scope="plan" class="${scope==='plan'?'selected':''}">Мой план <b>${plan(catalog,records,settings.variant).length}</b></button><a href="#completed">Пройденные <b>${catalog.filter(c=>r(c).status==='done').length}</b></a></div>${viewSwitch()}</div>
+ <section class="filters" aria-label="Фильтры каталога"><label class="search">${icon('search')}<input id="search" type="search" placeholder="Что хотите изучить?" value="${esc(query)}" aria-label="Поиск курсов"></label><label>Направление<select id="subject"><option value="">Все направления</option>${Object.entries(subjects).map(([k,v])=>`<option value="${k}" ${subject===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label><label>Статус<select id="status"><option value="">Все статусы</option>${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${status===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label><label class="checkbox"><input id="hide" type="checkbox" ${hide?'checked':''}> Скрыть пройденные</label></section>
+ <div class="list-meta"><span>Найдено <b>${list.length}</b> из ${catalog.length}</span><button class="text" data-action="reset">Сбросить фильтры</button></div><div id="catalog-grid" class="grid catalog-grid ${settings.layout==='list'?'list-view':''}">${remaining.map(card).join('')||(!done.length?empty('По этим фильтрам ничего не найдено','<button class="secondary" data-action="reset">Сбросить фильтры</button>'):'')}</div>${done.length?`<div class="completed-summary"><h2>Пройденные</h2><a href="#completed">Открыть отдельный раздел →</a></div>${completedGroups(done)}`:''}`;
 }
 function certificates(){
  const list=catalog.filter(c=>r(c).status==='done');
@@ -108,26 +131,60 @@ function alternatives(id){
  }).join('')}</div></div>`;
  }).join('');
 }
-function subjectPage(){
- return `<div class="page-heading"><div><p class="eyebrow">ЗНАНИЯ СКЛАДЫВАЮТСЯ В СИСТЕМУ</p><h1>Увидеть<br><em>всю картину.</em></h1><p class="muted">Пять направлений. Темы, курсы и ваша собственная практика.</p></div><span class="semester">${icon('subjects')} 5 направлений</span></div><div class="notice">Цель: 90+ · Сценарный балл: 95. Это плановые ориентиры. Решение о зачёте принимает ваш университет.</div>${Object.entries(subjects).map(([id,title])=>{
- const cs=plan(catalog,records,settings.variant).filter(c=>c.subjects.includes(id)),d=cs.filter(c=>r(c).status==='done').length;
+function syllabusPage(){
+ return `<div class="notice">Цель: 90+ · Сценарный балл: 95. Это плановые ориентиры. Решение о зачёте принимает ваш университет.</div>${Object.entries(baseSubjects).map(([id,title])=>{
+ const cs=plan(catalog,records,settings.variant).filter(c=>assignedSubjects(c,settings).includes(id)),d=cs.filter(c=>r(c).status==='done').length;
  return `<section class="subject panel"><div class="section-heading"><div><span class="tag ${id.toLowerCase()}">${id}</span><h2>${title}</h2></div><span class="subject-count">${d} / ${cs.length} курсов плана</span></div><label class="credit-field">Решение по зачёту<select data-credit="${id}"><option value="">Не запрашивалось</option>${['На рассмотрении','Зачтено','Не зачтено'].map(s=>`<option ${settings.credits?.[id]===s?'selected':''}>${s}</option>`).join('')}</select></label>${variantFor(id).map(v=>`<h3>${v==='UML'?'UML · Ассель Смайыл':v==='GO'?'Go · Тлеужан Мукатаев':'Недельный план SE'}</h3><div class="week-list">${syllabi.filter(row=>row[0]===v).map(row=>week(...row)).join('')}</div>`).join('')}${id==='CAP'?`<h3>Практические результаты Capstone</h3><div class="practice-list">${['План проекта','Собственная разработка','Final Paper','Презентация'].map((s,i)=>`<label class="checkbox"><input type="checkbox" data-practice="${i}" ${settings.practice?.[i]?'checked':''}>${s}</label>`).join('')}</div>`:''}<details class="alternatives"><summary>Другие источники и альтернативы <span class="disclosure-icon" aria-hidden="true">+</span></summary>${alternatives(id)}</details></section>`;
  }).join('')}`;
 }
+function subjectPage(){return subjectUI.render()+(settings.catalogMode!=='empty'?`<details class="syllabus-reference panel"><summary>Недельный план и исходные сопоставления SE</summary>${syllabusPage()}</details>`:'');}
 function render(){
+ const focusedSelect=document.activeElement?.dataset.selectTrigger;closeSelectMenu();
  const nextView=location.hash.slice(1).split('?')[0]||'overview',entering=nextView!==view||!$('#app').children.length;
  view=nextView;
- if(!nav.some(n=>n[0]===view))view='overview';
+ if(!nav.some(n=>n[0]===view)&&!extraViews[view])view='overview';
  if(location.hash.includes('?plan'))scope='plan';
- $('#app').innerHTML=`<aside class="sidebar"><a class="brand" href="#overview" aria-label="Курс за курсом — на главную"><span class="brand-mark">${icon('mark')}</span><span class="brand-copy">Курс<br><b>за курсом<span>.</span></b><small>ПРОСТРАНСТВО РОСТА</small></span></a><p class="nav-label">МОЁ ОБУЧЕНИЕ</p><nav aria-label="Главная навигация">${nav.map(([id,iconName,title])=>`<a href="#${id}" ${view===id?'aria-current="page"':''} class="${view===id?'current':''}"><span>${icon(iconName)}</span>${title}${id==='courses'?'<small>109</small>':''}</a>`).join('')}</nav><div class="sidebar-bottom"><div class="sidebar-note">${icon('sparkle')}<p>Важен не темп.<br>Важно продолжать.</p><span>Один курс — один шаг вперёд.</span></div><div class="local-dot">Данные на этом устройстве</div><button class="text" data-action="settings">${icon('settings')} Настройки и резервная копия</button></div></aside>
- <main><header class="topbar"><div class="topbar-left"><a class="mobile-brand" href="#overview" aria-label="Курс за курсом">${icon('mark')}<span>Курс за курсом</span></a><span class="breadcrumb">Личное пространство <span>/</span> <b>${nav.find(n=>n[0]===view)[2]}</b></span></div><div class="header-actions"><label class="variant">Архитектура<select id="variant"><option value="ALL">Обе версии</option><option value="UML" ${settings.variant==='UML'?'selected':''}>UML</option><option value="GO" ${settings.variant==='GO'?'selected':''}>Go</option></select></label><button class="theme-toggle" data-action="theme" aria-label="${currentTheme()==='dark'?'Включить светлую тему':'Включить тёмную тему'}" aria-pressed="${currentTheme()==='dark'}">${themeButton()}</button></div></header><div class="content ${entering?'page-enter':''}">${view==='courses'?courseList():view==='certificates'?certificates():view==='subjects'?subjectPage():overview()}<footer><span class="footer-name">Курс за курсом <span>·</span> Место для новых знаний</span><button class="text" data-action="settings">${icon('settings')} Настройки и резервная копия</button></footer></div></main><input hidden type="file" id="files" accept=".pdf,.csv,.json" multiple><dialog id="dialog"></dialog>`;
+ $('#app').innerHTML=`<aside class="sidebar"><a class="brand" href="#overview" aria-label="Курс за курсом — на главную"><span class="brand-mark">${icon('mark')}</span><span class="brand-copy">Курс<br><b>за курсом<span>.</span></b><small>ПРОСТРАНСТВО РОСТА</small></span></a><p class="nav-label">МОЁ ОБУЧЕНИЕ</p><nav aria-label="Главная навигация">${nav.map(([id,iconName,title])=>`<a href="#${id}" ${view===id?'aria-current="page"':''} class="${view===id?'current':''}"><span>${icon(iconName)}</span>${title}${id==='courses'?`<small>${catalog.length}</small>`:''}</a>`).join('')}</nav><div class="sidebar-bottom"><div class="sidebar-note">${icon('sparkle')}<p>Важен не темп.<br>Важно продолжать.</p><span>Один курс — один шаг вперёд.</span></div><div class="local-dot">Данные на этом устройстве</div><button class="text" data-action="settings">${icon('settings')} Настройки и резервная копия</button><a class="text" href="#setup">Расширение и свой сайт ↗</a></div></aside>
+ <main><header class="topbar"><div class="topbar-left"><a class="mobile-brand" href="#overview" aria-label="Курс за курсом">${icon('mark')}<span>Курс за курсом</span></a><span class="breadcrumb">Личное пространство <span>/</span> <b>${nav.find(n=>n[0]===view)?.[2]||extraViews[view]}</b></span></div><div class="header-actions"><label class="variant">Архитектура<select id="variant"><option value="ALL">Обе версии</option><option value="UML" ${settings.variant==='UML'?'selected':''}>UML</option><option value="GO" ${settings.variant==='GO'?'selected':''}>Go</option></select></label><button class="theme-toggle" data-action="theme" aria-label="${currentTheme()==='dark'?'Включить светлую тему':'Включить тёмную тему'}" aria-pressed="${currentTheme()==='dark'}">${themeButton()}</button></div></header><div class="content ${entering?'page-enter':''}">${view==='courses'?courseList():view==='completed'?completedPage():view==='certificates'?certificates():view==='subjects'?subjectPage():view==='setup'?setupPage():overview()}<footer><span class="footer-name">Курс за курсом</span><div class="footer-links"><a href="#setup">Расширение и свой сайт</a><button class="text" data-action="settings">${icon('settings')} Мои данные</button></div></footer></div></main><input hidden type="file" id="files" accept=".pdf,.csv,.json" multiple><input hidden type="file" id="excel-file" accept=".xlsx,.xls"><dialog id="dialog"></dialog>`;
+ enhanceSelects($('#app'));
+ if(focusedSelect)document.querySelector(`[data-select-trigger="${CSS.escape(focusedSelect)}"]`)?.focus({preventScroll:true});
 }
-function modal(title,html){const d=$('#dialog');d.innerHTML=`<div class="modal-heading"><h2>${title}</h2><button class="icon" data-action="close" aria-label="Закрыть">${icon('close')}</button></div>${html}`;if(!d.open)d.showModal();}
+function modal(title,html){closeSelectMenu();const d=$('#dialog');d.innerHTML=`<div class="modal-heading"><h2>${title}</h2><button class="icon" data-action="close" aria-label="Закрыть">${icon('close')}</button></div>${html}`;enhanceSelects(d);if(!d.open)d.showModal();}
+function setupPage(){
+ const zip=import.meta.env.BASE_URL+'course-progress-extension.zip',github='https://github.com/'+projectRepository;
+ return `<div class="page-heading catalog-heading"><div><h1>Свой сайт и расширение</h1><p class="muted">Отдельный адрес и локальные данные для каждого владельца.</p></div></div><section class="panel download-panel"><img src="${import.meta.env.BASE_URL}favicon.svg" width="56" height="56" alt="Логотип Курс за курсом"><div><h2>Расширение Chrome 1.2</h2><p>Читает отображаемые завершённые и активные курсы в «Моём обучении» Coursera.</p><div class="button-row"><a class="primary" href="${zip}" download>Скачать расширение ZIP</a><a class="secondary" href="${github}/releases" target="_blank" rel="noopener noreferrer">Релизы GitHub ↗</a></div><p class="small muted">Этот ZIP собран для адреса ${esc(location.origin+location.pathname)}. Для своей копии скачивайте расширение со своего сайта.</p></div></section><section class="panel onboarding-panel"><h2>Установить или обновить расширение</h2><ol><li>Распакуйте ZIP в постоянную папку.</li><li>В <code>chrome://extensions</code> включите «Режим разработчика» и выберите «Загрузить распакованное расширение».</li><li>При обновлении замените файлы в прежней папке и нажмите ↻ у расширения.</li><li>Обновите Coursera и трекер. В окне расширения подтвердите чтение и откройте «Завершённые» или «В процессе».</li></ol><p class="small muted">Расширение читает загруженные карточки и показывает причину, если результат не найден. Скрытые разделы оно не открывает. Перед сменой аккаунта отключите и очистите расширение.</p></section><section class="panel onboarding-panel"><h2>Личная копия для знакомого</h2><p>Каждый создаёт свой репозиторий и свой GitHub Pages. Новая копия начинается с пустого каталога и предметов. Добавьте свои курсы из Excel и создайте свои предметы.</p><a class="primary" href="https://github.com/Rumm1/aitu-course-tracker/generate" target="_blank" rel="noopener noreferrer">Создать мою копию сайта ↗</a><ol><li>Войдите в свой GitHub и нажмите кнопку создания копии.</li><li>В новом репозитории откройте Settings → Pages → Source → GitHub Actions.</li><li>В Actions запустите Publish GitHub Pages и дождитесь публикации.</li><li>Откройте свой адрес Pages. При необходимости загрузите свой Excel и скачайте ZIP расширения уже со своей страницы.</li></ol></section><section class="panel"><h2>Данные только у владельца</h2><p>Каталог из Excel, статусы, проценты, темы и настройки сохраняются в IndexedDB этого браузера. Сайт не отправляет их в GitHub и не объединяет с данными других людей.</p><p class="small muted">Для другого устройства перенесите резервную копию JSON. Очистка данных браузера удаляет локальное хранилище. PDF и разрешения на папку в JSON не входят.</p><button class="secondary" data-action="export">Экспорт моих данных JSON</button></section>`;
+}
+let excelImporter=null;
+async function readExcelInput(file){
+ if(!excelImporter){const {createExcelImporter}=await import('./excel-ui.js');excelImporter=createExcelImporter({modal,getCatalog:()=>catalog,getSubjects:()=>subjects,apply:applyExcelEntries,onError:error});}
+ await excelImporter.load(file);
+}
+async function applyExcelEntries(entries,fileName){
+ let added=0,updated=0,conflicts=0;const at=new Date().toISOString();
+ let nextSettings=settings;
+ for(const item of entries){if(!item.course||item.issues.length||item.duplicate||item.skipped)continue;for(const name of item.subjectNames||[]){const found=Object.entries(allDefinitions(nextSettings)).find(([,label])=>normalize(label)===normalize(name));if(!found)nextSettings=createSubject(nextSettings,name);else if(nextSettings.hiddenSubjects?.includes(found[0]))nextSettings={...nextSettings,hiddenSubjects:nextSettings.hiddenSubjects.filter(id=>id!==found[0])};}}
+ settings=nextSettings;refreshSubjects();
+ for(const item of entries){
+  if(!item.course||item.issues.length||item.duplicate||item.skipped)continue;
+  const existing=cById(item.courseId),before=records[item.courseId]||null;
+  const itemSubjects=[...new Set([...(item.subjects||[]),...(item.subjectNames||[]).map(name=>Object.entries(subjects).find(([,label])=>normalize(label)===normalize(name))?.[0]).filter(Boolean)])];
+  if(item.isNew&&!existing){customCourses=mergeLocalCourses(customCourses,[{...item.course,subjects:itemSubjects,subjectSource:item.subjectSource,addedAt:at}]);refreshCatalog();added++;}
+  const c=cById(item.courseId);if(!c)continue;
+  if(itemSubjects.length){const current=settings.subjectAssignments&&Object.hasOwn(settings.subjectAssignments,c.id)?settings.subjectAssignments[c.id]:c.subjects;settings.subjectAssignments={...settings.subjectAssignments,[c.id]:[...new Set([...(current||[]),...itemSubjects])]};}
+  const incoming={...item.record,source:'Excel · '+fileName};
+  if(incoming.percent!==undefined)incoming.progressUpdatedAt=at;
+  if(incoming.inPlan!==undefined&&before&&Object.hasOwn(before,'inPlan'))delete incoming.inPlan;
+  const merged=mergeRecord(r(c),incoming);if(merged.conflict)conflicts++;
+  if(incoming.inPlan!==undefined&&!before)merged.next.inPlan=!!incoming.inPlan;
+  records[c.id]=merged.next;if(item.record?.status||item.record?.percent!==undefined)updated++;
+ }
+ await save();$('#dialog').close();history.replaceState(null,'','#courses');render();toast(`Excel: добавлено ${added}, обновлено ${updated}${conflicts?', сохранены ручные исправления: '+conflicts:''}`);void checkExtensionProgress({automatic:true});
+}
 function details(id){
  const c=cById(id),s=r(c);
  modal(esc(c.title),`<div class="detail-meta"><span class="tag">${kinds[c.kind]}</span><span>${esc(c.provider||'Провайдер не указан')}</span></div><p class="course-meta">${icon('clock')}${esc(hours(c))}</p><p class="small muted">Источники: ${esc(c.sources.join(', '))} · ID: ${c.id}</p>${/ASP.NET|C#|\.NET/.test(c.title)?'<p class="notice">Практика на C#. Привязка к версии Go не меняет язык курса.</p>':''}${c.linkState==='requires-check'?`<p class="notice">Ссылка требует проверки. Исходный адрес: ${esc(c.url)}</p><button class="secondary" data-action="replace-url" data-id="${id}">Заменить URL курса</button>`:''}<div class="button-row">${primary(c)}<button class="secondary" data-action="edit-status" data-id="${id}">Изменить статус</button>${s.status==='done'?`<button class="secondary" data-action="certificate" data-id="${id}">Добавить / изменить ссылку</button>${c.url.includes('coursera.org')?'<a target="_blank" rel="noopener noreferrer" href="https://www.coursera.org/accomplishments">Мои достижения ↗</a>':''}`:''}</div><h3>Где пригодится этот курс</h3><ul class="relation-list">${linksFor(id).map(row=>`<li class="relation-row"><span class="source-pill">${esc(row.source)}</span><div><strong>${esc(row.topic)}</strong><p>${esc(row.variant)} · ${esc(row.week)} · ${esc(row.coverage)}</p></div></li>`).join('')||'<li class="muted small">Смотрите альтернативные сопоставления в разделе «Предметы».</li>'}</ul><p class="muted small">Членство в программах не предполагается автоматически. Сертификат программы не подтверждает отдельные курсы.</p>`);
 }
-function editStatus(id){const s=r(cById(id));modal('Статус курса',`<form id="status-form" data-id="${id}"><label>Статус<select name="status">${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${s.status===k?'selected':''}>${v}</option>`).join('')}</select></label><label>Дата завершения, если известна<input name="completedAt" type="date" value="${esc((s.completedAt||'').slice(0,10))}"></label><p class="small muted">Ручное исправление сохраняется при повторном импорте того же документа.</p><button class="primary">Сохранить</button></form>`);}
+function editStatus(id){const s=r(cById(id));modal('Статус курса',`<form id="status-form" data-id="${id}"><label>Статус<select name="status">${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${s.status===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label><label>Дата завершения, если известна<input name="completedAt" type="date" value="${esc((s.completedAt||'').slice(0,10))}"></label><p class="small muted">Ручное исправление сохраняется при повторном импорте того же документа.</p><button class="primary">Сохранить</button></form>`);}
 function editCert(id){const s=r(cById(id));modal('Персональный сертификат',`<form id="cert-form" data-id="${id}"><p>Вставьте ссылку на выданный вам сертификат этого курса.</p><label>HTTPS URL<input name="url" type="url" required value="${esc(s.certificateUrl||'')}"></label><button class="primary">Сохранить ссылку</button><p class="small muted">Ссылка не меняет статус курса. Кнопка сертификата появится после подтверждения завершения.</p></form>`);}
 function importModal(){modal('Учесть мои результаты',`<p>PDF, CSV и JSON обрабатываются локально. Никакие документы не отправляются на сервер.</p><label>Имя владельца, как в сертификате<input id="import-owner" value="${esc(settings.owner)}"></label><div class="button-row"><button class="primary" data-action="files">Выбрать файлы</button>${'showDirectoryPicker'in window?'<button class="secondary" data-action="folder">Подключить папку PDF</button>':''}</div><p class="small muted">Для CSV/JSON нужны ID или точное название и явный статус. Неоднозначные записи попадут на проверку. На телефоне выберите несколько PDF.</p>`);}
 function settingsModal(){modal('Ваше пространство',`<div class="settings-appearance"><p class="eyebrow">ОФОРМЛЕНИЕ</p><label>Тема<select id="theme-preference"><option value="system" ${settings.theme==='system'?'selected':''}>Как в системе</option><option value="light" ${settings.theme==='light'?'selected':''}>Светлая</option><option value="dark" ${settings.theme==='dark'?'selected':''}>Тёмная</option></select></label><p class="small muted">Выбор темы и вида каталога запоминается на этом устройстве.</p></div><p class="eyebrow">ПРОФИЛЬ И ДАННЫЕ</p><label>Владелец профиля<input id="import-owner" value="${esc(settings.owner)}"></label><div class="button-row"><button class="primary" data-action="export">${icon('arrow')} Экспорт JSON</button><button class="secondary" data-action="files">${icon('upload')} Импорт JSON / CSV / PDF</button></div><p>Резервная копия содержит личные статусы и ссылки. Храните её у себя.</p><p class="small muted">Прогресс принадлежит этому браузеру. PDF и разрешение на папку не входят в резервную копию.</p><button class="text" data-action="documents">Документы и отмена привязок ↗</button>`);}
@@ -197,10 +254,12 @@ async function checkExtensionProgress({automatic=false,payload=null}={}){
  if(extensionBusy||busy||automatic&&($('#dialog')?.open||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)))return false;
  extensionBusy=true;
  try{
-  const state=payload||await requestExtension();extensionState=state;
-  if(!state?.enabled||!state.rows.length)return false;
-  const rows=[...new Map(state.rows.filter(row=>cById(row.courseId)).map(row=>[row.courseId,row])).values()];
-  if(!rows.length)return false;
+  const state=payload||await requestExtension(900,catalog);extensionState=state;
+  if(!state?.enabled)return false;
+  const discovered=reconcileExtensionCatalog(catalog,customCourses,state);
+  if(discovered.added){customCourses=discovered.customCourses;refreshCatalog();await save();}
+  const rows=discovered.rows;
+  if(!rows.length){if(discovered.added){render();if(!automatic)toast(`Добавлено курсов из Coursera: ${discovered.added}. Предметы можно выбрать в разделе «Предметы».`);return true;}return false;}
   const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify({rows,ambiguous:state.ambiguous||[]})));
   const key=Array.from(new Uint8Array(digest),v=>v.toString(16).padStart(2,'0')).join('');
   if(automatic&&settings.extensionRevision===key)return true;
@@ -216,7 +275,7 @@ async function checkExtensionProgress({automatic=false,payload=null}={}){
  }catch(err){if(!automatic)error(err);return false;}finally{extensionBusy=false;}
 }
 onExtensionProgress(payload=>{void checkExtensionProgress({automatic:true,payload});});
-async function exportBackup(){const data={app:'aitu-course-tracker',version:1,exportedAt:new Date().toISOString(),records:Object.fromEntries(Object.entries(records).map(([id,{pdfKey,documentKey,...rest}])=>[id,rest])),settings:{owner:settings.owner,variant:settings.variant,credits:settings.credits,practice:settings.practice,theme:settings.theme,layout:settings.layout}};download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'course-progress.json');}
+async function exportBackup(){const data={app:'aitu-course-tracker',version:1,exportedAt:new Date().toISOString(),courses:customCourses,records:Object.fromEntries(Object.entries(records).map(([id,{pdfKey,documentKey,...rest}])=>[id,rest])),settings:{owner:settings.owner,variant:settings.variant,credits:settings.credits,practice:settings.practice,theme:settings.theme,layout:settings.layout,catalogMode:settings.catalogMode,...validateSubjectSettings(settings,catalog)}};download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'course-progress.json');}
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 async function openPDF(id){const tab=window.open('about:blank','_blank');if(tab)tab.opener=null;const file=await store.get('pdfs',r(cById(id)).pdfKey);if(!file){tab?.close();return toast('PDF недоступен. Загрузите файл повторно или добавьте ссылку.');}const url=URL.createObjectURL(file);if(tab)tab.location.href=url;else download(file,'certificate.pdf');setTimeout(()=>URL.revokeObjectURL(url),60000);}
 
@@ -241,7 +300,9 @@ async function importFile(file){if(file.size>40*1024*1024)throw Error('Файл 
  const text=await file.text();
  if(/\.json$/i.test(file.name)){
  const data=JSON.parse(text);if(data?.app==='aitu-course-tracker'){
- const imported=validateBackup(data,catalog);for(const [id,row]of Object.entries(imported)){
+ const fromBackup=validateLocalCourses(data.courses||[]).filter(c=>!cById(c.id));
+ const nextPending=mergeLocalCourses(pendingCatalog,fromBackup),available=[...(data.settings?.catalogMode==='curated'?baseCatalog:catalog),...nextPending];
+ const imported=validateBackup(data,available);pendingCatalog=nextPending;for(const [id,row]of Object.entries(imported)){
  const documentKey=key+':'+id,previous=await store.get('documents',documentKey);
  if(previous?.applied||previous?.ignored||pending.some(item=>item.documentKey===documentKey))continue;
  const item={...row,backup:true,courseId:id,source:row.source||'Резервная копия',documentKey,reason:mergeBackupRecord(records[id]||{},row).conflict?'Есть локальные данные: сохраняются конфликтующие локальные значения':''};
@@ -255,26 +316,34 @@ async function importFile(file){if(file.size>40*1024*1024)throw Error('Файл 
 let pendingCSVs=[],pendingSettings=null;
 function mapColumns(){const pendingCSV=pendingCSVs[0];if(!pendingCSV)return review();const fields={courseId:'ID курса',title:'Название',status:'Статус',provider:'Провайдер',completedAt:'Дата завершения',grade:'Оценка',certificateUrl:'URL сертификата'};modal('Сопоставление колонок CSV',`<p>${esc(pendingCSV.fileName)} · файлов в очереди: ${pendingCSVs.length}</p><form id="mapping-form">${Object.entries(fields).map(([key,label])=>`<label>${label}<select name="${key}"><option value="">Не используется</option>${pendingCSV.headers.map(h=>`<option ${normalize(h)===normalize(key)||normalize(h)===normalize(label)?'selected':''}>${esc(h)}</option>`).join('')}</select></label>`).join('')}<button class="primary">Проверить ${pendingCSV.rows.length} записей</button></form>`);}
 function review(){
- if(!pending.length&&!pendingSettings){$('#dialog')?.close();render();return toast('Импорт завершён');}
- modal('Проверка импорта',`<p>Проверьте курс, статус и конфликтующие данные. Пустые и старые записи не стирают завершение и сертификат.</p>${pendingSettings?'<label class="checkbox"><input id="restore-settings" type="checkbox">Перенести настройки профиля, архитектуры, практики и решения по зачёту из копии</label>':''}<div class="review-list">${pending.map((item,i)=>{
- const c=cById(item.courseId),conflict=c&&(item.backup?mergeBackupRecord(records[c.id]||{},item):mergeRecord(r(c),item)).conflict;
- return `<div class="review-row" data-review="${i}"><label class="checkbox"><input type="checkbox" data-accept="${i}" ${item.courseId&&item.status&&!item.reason&&!conflict?'checked':''}>Применить запись</label><p>${esc(item.source)}${item.row?.title?' · '+esc(item.row.title):''}</p><p class="warning">${esc(item.reason||'')}${conflict?' · Конфликт: локальный статус, дата, ссылка или настройки сохраняются.':''}</p><label>Курс<select data-map="${i}"><option value="">Выберите курс</option>${catalog.map(c=>`<option value="${c.id}" ${c.id===item.courseId?'selected':''}>${esc(c.title)} · ${esc(c.provider||c.kind)}</option>`).join('')}</select></label><label>Подтверждённый статус<select data-import-status="${i}"><option value="">Не подтверждён</option>${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${item.status===k?'selected':''}>${v}</option>`).join('')}</select></label>${item.pdfKey?`<details><summary>Извлечённый текст PDF</summary><p class="pdf-text">${esc(item.text||'Нет читаемого текста')}</p></details>`:''}<p class="small">Дата: ${date(item.completedAt)} · ${item.certificateUrl?'Персональная ссылка найдена':'Публичная ссылка не найдена'}</p><button class="text" data-ignore="${i}">Не импортировать этот документ повторно</button></div>`;
+ if(!pending.length&&!pendingSettings&&!pendingCatalog.length){$('#dialog')?.close();render();return toast('Импорт завершён');}
+ const available=[...(pendingSettings?.catalogMode==='curated'?baseCatalog:catalog),...customCourses,...pendingCatalog.filter(c=>!cById(c.id))].filter((course,index,list)=>list.findIndex(item=>item.id===course.id)===index);
+ modal('Проверка импорта',`<p>Проверьте курс, статус и конфликтующие данные. Пустые и старые записи не стирают завершение и сертификат.</p>${pendingCatalog.length?`<label class="checkbox"><input id="restore-courses" type="checkbox" checked>Добавить недостающие курсы из копии (${pendingCatalog.length})</label>`:''}${pendingSettings?'<label class="checkbox"><input id="restore-settings" type="checkbox">Перенести настройки, свои предметы и списки курсов из копии</label>':''}<div class="review-list">${pending.map((item,i)=>{
+ const c=available.find(c=>c.id===item.courseId),conflict=c&&(item.backup?mergeBackupRecord(records[c.id]||{},item):mergeRecord(r(c),item)).conflict;
+ return `<div class="review-row" data-review="${i}"><label class="checkbox"><input type="checkbox" data-accept="${i}" ${item.courseId&&item.status&&!item.reason&&!conflict?'checked':''}>Применить запись</label><p>${esc(item.source)}${item.row?.title?' · '+esc(item.row.title):''}</p><p class="warning">${esc(item.reason||'')}${conflict?' · Конфликт: локальный статус, дата, ссылка или настройки сохраняются.':''}</p><label>Курс<select data-map="${i}"><option value="">Выберите курс</option>${available.map(c=>`<option value="${c.id}" ${c.id===item.courseId?'selected':''}>${esc(c.title)} · ${esc(c.provider||c.kind)}</option>`).join('')}</select></label><label>Подтверждённый статус<select data-import-status="${i}"><option value="">Не подтверждён</option>${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${item.status===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label>${item.pdfKey?`<details><summary>Извлечённый текст PDF</summary><p class="pdf-text">${esc(item.text||'Нет читаемого текста')}</p></details>`:''}<p class="small">Дата: ${date(item.completedAt)} · ${item.certificateUrl?'Персональная ссылка найдена':'Публичная ссылка не найдена'}</p><button class="text" data-ignore="${i}">Не импортировать этот документ повторно</button></div>`;
  }).join('')}</div><button class="primary" data-action="apply-import">Применить выбранные</button>`);
 }
 async function applyImport(){
  const accepted=[...document.querySelectorAll('[data-accept]:checked')].map(e=>+e.dataset.accept),prepared=[];
  // Validate the complete selection before mutating any record.
- for(const i of accepted){const item=pending[i],c=cById(item.courseId);if(!c||!item.status)return toast('Выберите курс и явный статус для каждой записи');
+ const restoreSettings=$('#restore-settings')?.checked&&pendingSettings;
+ const restoreCourses=$('#restore-courses')?.checked,available=[...(restoreSettings&&pendingSettings.catalogMode==='curated'?baseCatalog:catalog),...customCourses,...(restoreCourses?pendingCatalog:[])];
+ const subjectSettings=restoreSettings?validateSubjectSettings(pendingSettings,available):null;
+ for(const i of accepted){const item=pending[i],c=available.find(c=>c.id===item.courseId);if(!c||!item.status)return toast('Выберите курс и явный статус; для нового курса включите восстановление каталога');
  let certificate=item.certificateUrl;if(!certificate&&item.links)certificate=item.links.map(l=>certificateURL(l,c)).find(Boolean);
  if(certificate&&!certificateURL(certificate,c))return toast('Ссылка не соответствует платформе выбранного курса');
  prepared.push({item,c,certificate});}
+ if(restoreCourses){customCourses=mergeLocalCourses(customCourses,pendingCatalog);refreshCatalog();}
  for(const {item,c,certificate} of prepared){
  const before=records[c.id]||null,incoming={...item.backup?item:{},status:item.status,source:item.source,...item.completedAt?{completedAt:item.completedAt}:{},...certificate?{certificateUrl:certificate}:{},...item.pdfKey?{pdfKey:item.pdfKey}:{},...item.grade!==undefined?{grade:item.grade}:{},documentKey:item.documentKey};
  if(item.backup){for(const key of ['backup','courseId','reason','row','candidates'])delete incoming[key];}
  const merged=item.backup?mergeBackupRecord(records[c.id]||{},incoming):mergeRecord(r(c),incoming);records[c.id]=merged.next;
  if(item.documentKey)await store.put('documents',item.documentKey,{...(await store.get('documents',item.documentKey)),courseId:c.id,before,after:merged.next,applied:true});
  }
- if($('#restore-settings')?.checked&&pendingSettings){
+ if(restoreSettings){
+ settings={...settings,...subjectSettings,subjectDefinitions:{...settings.subjectDefinitions,...subjectSettings.subjectDefinitions},subjectAssignments:{...settings.subjectAssignments,...subjectSettings.subjectAssignments}};
+ if(['empty','curated'].includes(pendingSettings.catalogMode))settings.catalogMode=pendingSettings.catalogMode;
+ refreshCatalog();refreshSubjects();
  if(typeof pendingSettings.owner==='string')settings.owner=pendingSettings.owner.slice(0,300);
  if(['ALL','UML','GO'].includes(pendingSettings.variant))settings.variant=pendingSettings.variant;
  if(['system','light','dark'].includes(pendingSettings.theme))settings.theme=pendingSettings.theme;
@@ -282,7 +351,7 @@ async function applyImport(){
  for(const [id,value]of Object.entries(pendingSettings.credits||{}))if(Object.hasOwn(subjects,id)&&['','На рассмотрении','Зачтено','Не зачтено'].includes(value))(settings.credits??={})[id]=value;
  for(const [id,value]of Object.entries(pendingSettings.practice||{}))if(['0','1','2','3'].includes(id)&&typeof value==='boolean')(settings.practice??={})[id]=value;
  }
- await save();applyTheme();pending=pending.filter((_,i)=>!accepted.includes(i));pendingSettings=null;$('#dialog').close();render();toast(`Применено записей: ${prepared.length}${pending.length?'. Остальные доступны в документах.':''}`);
+ await save();applyTheme();pending=pending.filter((_,i)=>!accepted.includes(i));pendingSettings=null;pendingCatalog=[];$('#dialog').close();render();toast(`Применено записей: ${prepared.length}${pending.length?'. Остальные доступны в документах.':''}`);
 }
 async function handleFiles(files){if(busy)return;busy=true;let counts={added:0,skipped:0,review:0};try{for(const f of files){try{const result=await importFile(f);for(const k of Object.keys(counts))counts[k]+=result[k]||0;}catch(e){counts.review++;toast(`${f.name}: ${e.message}`);}}settings.scan={...counts,at:new Date().toISOString()};await save();render();if(pendingCSVs.length)mapColumns();else if(pending.length||pendingSettings)review();else toast(`Добавлено: ${counts.added}, пропущено: ${counts.skipped}`);}finally{busy=false;}}
 async function scanFolder(userAction=false){if(!directory||busy||!userAction&&$('#dialog')?.open)return;try{let permission=await directory.queryPermission({mode:'read'});if(permission!=='granted'&&userAction)permission=await directory.requestPermission({mode:'read'});if(permission!=='granted'){if(userAction)toast('Доступ к папке не предоставлен. Сохранённые данные доступны.');return;}const files=[];for await(const entry of directory.values())if(entry.kind==='file'&&/\.pdf$/i.test(entry.name))files.push(await entry.getFile());await handleFiles(files);}catch(e){toast('Папка недоступна. Загрузите PDF вручную или восстановите доступ.');}}
@@ -295,7 +364,8 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-acti
  if(b.dataset.ignore){const item=pending[+b.dataset.ignore];await store.put('documents',item.documentKey,{...(await store.get('documents',item.documentKey)),ignored:true});pending.splice(+b.dataset.ignore,1);review();return;}
  if(b.dataset.reviewDocument){const key=b.dataset.reviewDocument,d=await store.get('documents',key);if(!pending.some(item=>item.documentKey===key))pending.push(d.staged||{...d.parsed,documentKey:key,pdfKey:key,status:d.parsed.issued?'done':null,source:'PDF · '+d.name});review();return;}
  if(b.dataset.undo){const key=b.dataset.undo,d=await store.get('documents',key);const reverted=undoImportedRecord(records[d.courseId],d.before,d.after||records[d.courseId]);if(reverted)records[d.courseId]=reverted;else delete records[d.courseId];await store.put('documents',key,{...d,applied:false,ignored:true});await save();$('#dialog').close();render();toast('Привязка отменена; последующие ручные изменения сохранены');return;}
- const id=b.dataset.id,c=cById(id);switch(b.dataset.action){
+ const id=b.dataset.id,c=cById(id);if(b.dataset.action?.startsWith('subject-')&&await subjectUI.handleAction(b.dataset.action,id))return;switch(b.dataset.action){
+ case 'excel':$('#excel-file').click();break;
  case 'progress-check':if(!await checkExtensionProgress())openProgressPaste('done');break;
  case 'progress-paste':openProgressPaste('done');break;
  case 'progress-clarify':showProgressClarifications();break;
@@ -324,6 +394,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-acti
  }catch(err){error(err);}});
 document.addEventListener('input',e=>{if(e.target.id==='search'){const pos=e.target.selectionStart;query=e.target.value;render();$('#search').focus();$('#search').setSelectionRange(pos,pos);}});
 document.addEventListener('change',async e=>{const t=e.target;try{
+ if(t.id==='excel-file'){if(t.files[0])await readExcelInput(t.files[0]);t.value='';return;}
  if(t.id==='files'){await handleFiles(t.files);return;}
  if(t.id==='theme-preference'){settings.theme=['system','light','dark'].includes(t.value)?t.value:'system';document.documentElement.classList.add('theme-ready');applyTheme();await save();}
  if(t.id==='variant'){settings.variant=t.value;await save();render();}
@@ -348,7 +419,8 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){scanFolde
 window.addEventListener('focus',()=>{void checkExtensionProgress({automatic:true});});
 setInterval(()=>{if(!document.hidden){scanFolder();void checkExtensionProgress({automatic:true});}const d=deadline();if($('#countdown'))$('#countdown').innerHTML=d.expired?'Дедлайн прошёл':`${d.days} дн. <span>${d.hours} ч.</span>`;},60000);
 try{
- const saved=await store.get('state','main');if(saved){records=saved.records||{};settings={...settings,...saved.settings};}
+ const saved=await store.get('state','main');if(saved){records=saved.records||{};settings={...settings,...saved.settings};customCourses=validateLocalCourses(saved.customCourses||[]);}else{settings.catalogMode=curatedDefault?'curated':'empty';settings.subjectsMode=curatedDefault?'default':'empty';}
+ refreshCatalog();refreshSubjects();
  if(!['system','light','dark'].includes(settings.theme))settings.theme='system';
  if(!['grid','list'].includes(settings.layout))settings.layout='grid';
  directory=await store.get('state','directory');applyTheme();render();await scanFolder();void checkExtensionProgress({automatic:true});
