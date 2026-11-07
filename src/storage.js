@@ -1,0 +1,6 @@
+const name='aitu-course-tracker:v1:'+location.pathname.replace(/\/[^/]*$/,'/');
+export const db=new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{for(const s of ['state','pdfs','documents'])req.result.createObjectStore(s);};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+export async function get(store,key){const d=await db;return new Promise((resolve,reject)=>{const req=d.transaction(store).objectStore(store).get(key);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+export async function put(store,key,value){const d=await db;return new Promise((resolve,reject)=>{const t=d.transaction(store,'readwrite');t.objectStore(store).put(value,key);t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error);});}
+export async function remove(store,key){const d=await db;return new Promise((resolve,reject)=>{const t=d.transaction(store,'readwrite');t.objectStore(store).delete(key);t.oncomplete=resolve;t.onerror=()=>reject(t.error);});}
+export async function entries(store){const d=await db;return new Promise((resolve,reject)=>{const result=[];const req=d.transaction(store).objectStore(store).openCursor();req.onsuccess=()=>{const c=req.result;if(c){result.push([c.key,c.value]);c.continue();}else resolve(result);};req.onerror=()=>reject(req.error);});}

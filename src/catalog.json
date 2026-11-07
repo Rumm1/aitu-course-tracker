@@ -1,0 +1,1841 @@
+[
+  {
+    "id": "Q12",
+    "title": "Software Quality Control and Management Part 1",
+    "url": "https://www.coursera.org/learn/software-quality-control-management",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Northeastern University",
+    "hoursBySource": {
+      "SE": 20
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA / UML"
+  },
+  {
+    "id": "Q2",
+    "title": "Mastering Selenium WebDriver and Java Fundamentals",
+    "url": "https://www.coursera.org/learn/packt-mastering-selenium-webdriver-and-java-fundamentals-kb9ib",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "SE": 20
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q3",
+    "title": "Advanced Automation Frameworks and Testing with TestNG",
+    "url": "https://www.coursera.org/learn/packt-advanced-automation-frameworks-and-testing-with-testng-tgoar",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q5",
+    "title": "Selenium Integration with CI/CD & Advanced Testing",
+    "url": "https://www.coursera.org/learn/packt-selenium-integration-with-ci-cd-and-advanced-testing-i99qb",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA",
+    "hoursBySource": {
+      "XLS": 17
+    }
+  },
+  {
+    "id": "Q6",
+    "title": "Cucumber BDD Made Easy + Automation Framework Design",
+    "url": "https://www.coursera.org/learn/packt-cucumber-bdd-made-easy-automation-framework-design-bexit",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q7",
+    "title": "Learn REST API Automation Using REST Assured",
+    "url": "https://www.coursera.org/learn/packt-learn-rest-api-automation-using-rest-assured-zkfvh",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "SE": 8,
+      "LIST": "~7"
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q8",
+    "title": "Master JMeter on Live Apps for Performance Testing",
+    "url": "https://www.coursera.org/learn/packt-learn-jmeter-from-scratch-on-live-applications-performance-testing-4ycew",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q9",
+    "title": "Apply ETL Testing Techniques for Retail Data Pipelines",
+    "url": "https://www.coursera.org/learn/apply-etl-testing-techniques-for-retail-data-pipelines",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "EDUCBA",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "QA"
+  },
+  {
+    "id": "S1",
+    "title": "IT Security: Defense against the digital dark arts",
+    "url": "https://www.coursera.org/learn/it-security",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "SEC"
+  },
+  {
+    "id": "S2",
+    "title": "Introduction to IT Security",
+    "url": "https://www.coursera.org/learn/akamai-security",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Akamai",
+    "hoursBySource": {
+      "SE": 20
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "SEC"
+  },
+  {
+    "id": "S3",
+    "title": "Assets, Threats, and Vulnerabilities",
+    "url": "https://www.coursera.org/learn/assets-threats-and-vulnerabilities",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "SEC",
+    "hoursBySource": {
+      "XLS": 19
+    }
+  },
+  {
+    "id": "S7",
+    "title": "Systems and Application Security",
+    "url": "https://www.coursera.org/learn/systems-and-application-security",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "ISC2",
+    "hoursBySource": {
+      "SE": 11
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "SEC"
+  },
+  {
+    "id": "F103",
+    "title": "Application Security for Developers and DevOps Professionals",
+    "url": "https://www.coursera.org/learn/application-security-for-developers-devops",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "IBM",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "SEC",
+    "hoursBySource": {
+      "XLS": 17
+    }
+  },
+  {
+    "id": "U2",
+    "title": "Design Patterns",
+    "url": "https://www.coursera.org/learn/design-patterns",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Alberta",
+    "hoursBySource": {
+      "SE": 20,
+      "XLS": 15,
+      "LIST": "15"
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Общее для двух SE-версий",
+    "also": [
+      "Design Patterns: Apply Reusable Software Solutions"
+    ]
+  },
+  {
+    "id": "G1",
+    "title": "Getting Started with Go",
+    "url": "https://www.coursera.org/learn/golang-getting-started",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of California, Irvine",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Мукатаев / Go",
+    "hoursBySource": {
+      "XLS": 10
+    }
+  },
+  {
+    "id": "G2",
+    "title": "Building Microservices API in Go",
+    "url": "https://www.coursera.org/learn/packt-building-microservices-api-in-go-bq6wv",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Мукатаев / Go"
+  },
+  {
+    "id": "G3",
+    "title": "ASP.NET Core - SOLID and Clean Architecture (.NET 5 and Up)",
+    "url": "https://www.coursera.org/learn/packt-asp-net-core-solid-and-clean-architecture-net-5-and-up-iqwi9",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Мукатаев / Go",
+    "hoursBySource": {
+      "LIST": "~16"
+    }
+  },
+  {
+    "id": "U1",
+    "title": "Object-Oriented Design",
+    "url": "https://www.coursera.org/learn/object-oriented-design",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Alberta",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Смаийл / UML",
+    "hoursBySource": {
+      "XLS": 17,
+      "LIST": "17"
+    }
+  },
+  {
+    "id": "U3",
+    "title": "Software Architecture",
+    "url": "https://www.coursera.org/learn/software-architecture",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Alberta",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Смаийл / UML",
+    "hoursBySource": {
+      "XLS": 10,
+      "LIST": "10"
+    },
+    "also": [
+      "Software Architecture: Design Maintainable Systems"
+    ]
+  },
+  {
+    "id": "F041",
+    "title": "Software Requirements Prioritization: Risk Analysis",
+    "url": "https://www.coursera.org/learn/software-requirements-prioritization",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Colorado System",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Смаийл / UML",
+    "hoursBySource": {
+      "LIST": "~20"
+    }
+  },
+  {
+    "id": "F084",
+    "title": "Software Engineering: Modeling Software Systems using UML",
+    "url": "https://www.coursera.org/learn/software-engineering-modeling-software-systems-using-uml",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "The Hong Kong University of Science and Technology",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "Только Смаийл / UML",
+    "hoursBySource": {
+      "XLS": 29
+    }
+  },
+  {
+    "id": "E2",
+    "title": "Innovation for Entrepreneurs: From Idea to Marketplace",
+    "url": "https://www.coursera.org/learn/innovative-entrepreneur",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Maryland",
+    "hoursBySource": {
+      "SE": 7
+    },
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "TE"
+  },
+  {
+    "id": "E3",
+    "title": "Entrepreneurship II: Preparing for Launch",
+    "url": "https://www.coursera.org/learn/entrepreneurship-2",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Illinois Urbana-Champaign",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "TE"
+  },
+  {
+    "id": "E4",
+    "title": "Market Analysis",
+    "url": "https://www.coursera.org/learn/entrepreneurship-market-analysis",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Minnesota",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "TE",
+    "hoursBySource": {
+      "XLS": 12
+    }
+  },
+  {
+    "id": "C1",
+    "title": "Understanding Research Methods",
+    "url": "https://www.coursera.org/learn/research-methods",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of London; SOAS University of London",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "CAP",
+    "hoursBySource": {
+      "XLS": 6
+    },
+    "also": [
+      "Research Methods: Plan and Evaluate Research Studies"
+    ]
+  },
+  {
+    "id": "C2",
+    "title": "Project: Writing a Research Paper",
+    "url": "https://www.coursera.org/learn/academic-writing-capstone",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of California, Irvine",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "CAP"
+  },
+  {
+    "id": "C3",
+    "title": "Back-end Application Development Capstone Project",
+    "url": "https://www.coursera.org/learn/backend-development-capstone-project",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "IBM",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "CAP"
+  },
+  {
+    "id": "P3",
+    "title": "Project Execution: Running the Project",
+    "url": "https://www.coursera.org/learn/project-execution-google",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "Google",
+    "inPlan": true,
+    "role": "Основа по версии",
+    "seScope": "CAP"
+  },
+  {
+    "id": "Q4",
+    "title": "Comprehensive Automation and Continuous Integration",
+    "url": "https://www.coursera.org/learn/packt-comprehensive-automation-and-continuous-integration-tgoar",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "role": "Закрытие пробела",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q10",
+    "title": "Software Testing, Deployment, and Maintenance Strategies",
+    "url": "https://www.coursera.org/learn/software-testing-deployment-and-maintenance-strategies",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "IBM",
+    "role": "Закрытие пробела",
+    "seScope": "QA"
+  },
+  {
+    "id": "Q13",
+    "title": "API Security Testing for Pentesters & Bug Hunters (2026)",
+    "url": "https://www.coursera.org/learn/packt-api-security-testing-for-pentesters-and-bug-hunters",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "role": "Закрытие пробела",
+    "seScope": "QA"
+  },
+  {
+    "id": "S5",
+    "title": "Sound the Alarm: Detection and Response",
+    "url": "https://www.coursera.org/learn/detection-and-response",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "role": "Закрытие пробела",
+    "seScope": "SEC",
+    "hoursBySource": {
+      "XLS": 17
+    }
+  },
+  {
+    "id": "F079",
+    "title": "Business Model & Product Pitch",
+    "url": "https://www.coursera.org/learn/business-model--product-pitch",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Minnesota",
+    "role": "Закрытие пробела",
+    "seScope": "TE",
+    "hoursBySource": {
+      "XLS": 12
+    }
+  },
+  {
+    "id": "P1",
+    "title": "Project Initiation: Starting a Successful Project",
+    "url": "https://www.coursera.org/learn/project-initiation-google",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "Google",
+    "role": "Закрытие пробела",
+    "seScope": "CAP"
+  },
+  {
+    "id": "F088",
+    "title": "Foundations of Selenium WebDriver and Java for Automation",
+    "url": "https://www.coursera.org/learn/packt-foundations-of-selenium-webdriver-and-java-for-automation-j6khz",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "role": "Потенциальный — замена",
+    "seScope": "QA",
+    "hoursBySource": {
+      "XLS": 22
+    }
+  },
+  {
+    "id": "F104",
+    "title": "Black-box and White-box Testing",
+    "url": "https://www.coursera.org/learn/black-box-white-box-testing",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "University of Minnesota",
+    "role": "Потенциальный — замена",
+    "seScope": "QA",
+    "hoursBySource": {
+      "XLS": 26
+    }
+  },
+  {
+    "id": "F017",
+    "title": "JUnit and Mockito Unit Testing for Java Developers",
+    "url": "https://www.coursera.org/learn/packt-junit-and-mockito-unit-testing-for-java-developers-md38o",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "role": "Потенциальный — замена",
+    "seScope": "QA"
+  },
+  {
+    "id": "S6",
+    "title": "Secure Software Development",
+    "url": "https://www.coursera.org/learn/packt-secure-software-development-1o6mn",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Packt",
+    "role": "Потенциальный — замена",
+    "seScope": "SEC"
+  },
+  {
+    "id": "F099",
+    "title": "Cybersecurity Compliance Framework, Standards & Regulations",
+    "url": "https://www.coursera.org/learn/cybersecurity-compliance-framework-standards-regulations",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "IBM",
+    "role": "Потенциальный — замена",
+    "seScope": "SEC",
+    "hoursBySource": {
+      "XLS": 11
+    }
+  },
+  {
+    "id": "F052",
+    "title": "Build and Implement Web Applications Using Golang",
+    "url": "https://www.coursera.org/learn/build-and-implement-web-applications-using-golang",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "EDUCBA",
+    "role": "Потенциальный — замена",
+    "seScope": "Только Мукатаев / Go",
+    "hoursBySource": {
+      "LIST": "6"
+    }
+  },
+  {
+    "id": "X2",
+    "title": "Clean Architecture in Go: A Trader Monorepo with MongoDB",
+    "url": "https://www.udemy.com/course/golang-clean-architecture-trader-monorepo-with-mongodb",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Federico León",
+    "role": "Потенциальный — замена",
+    "seScope": "Только Мукатаев / Go"
+  },
+  {
+    "id": "F043",
+    "title": "Object-Oriented Analysis and Design: Foundations & Concepts",
+    "url": "https://www.coursera.org/learn/object-oriented-analysis-and-design-foundations-and-concepts",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Colorado Boulder",
+    "role": "Потенциальный — замена",
+    "seScope": "Только Смаийл / UML"
+  },
+  {
+    "id": "F078",
+    "title": "The Ideation Process",
+    "url": "https://www.coursera.org/learn/the-ideation-process",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Minnesota",
+    "role": "Потенциальный — замена",
+    "seScope": "TE",
+    "hoursBySource": {
+      "XLS": 12
+    }
+  },
+  {
+    "id": "F106",
+    "title": "New Venture Finance: Startup Funding for Entrepreneurs",
+    "url": "https://www.coursera.org/learn/startup-funding",
+    "kind": "course",
+    "sources": [
+      "SE"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Maryland",
+    "role": "Потенциальный — замена",
+    "seScope": "TE",
+    "also": [
+      "Startup Finance: Evaluate Funding Options and Raise Capital"
+    ]
+  },
+  {
+    "id": "F067",
+    "title": "Writing in the Sciences",
+    "url": "https://www.coursera.org/learn/sciwrite",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "Stanford University",
+    "role": "Потенциальный — замена",
+    "seScope": "CAP",
+    "hoursBySource": {
+      "XLS": 30
+    }
+  },
+  {
+    "id": "F071",
+    "title": "Initiating and Planning Projects",
+    "url": "https://www.coursera.org/learn/project-planning",
+    "kind": "course",
+    "sources": [
+      "SE",
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of California, Irvine",
+    "role": "Потенциальный — замена",
+    "seScope": "CAP",
+    "hoursBySource": {
+      "XLS": 5
+    }
+  },
+  {
+    "id": "K001",
+    "title": "Quantitative Methods",
+    "url": "https://www.coursera.org/learn/quantitative-methods",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of Amsterdam",
+    "hoursBySource": {
+      "XLS": 30
+    }
+  },
+  {
+    "id": "K002",
+    "title": "Qualitative Research Methods",
+    "url": "https://www.coursera.org/learn/qualitative-methods",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of Amsterdam",
+    "hoursBySource": {
+      "XLS": 27
+    }
+  },
+  {
+    "id": "K003",
+    "title": "Software Engineering: Software Design and Project Management",
+    "url": "https://www.coursera.org/learn/software-engineering-software-design-and-project-management",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "HKUST",
+    "hoursBySource": {
+      "XLS": 20
+    }
+  },
+  {
+    "id": "K004",
+    "title": "Introduction to Research for Essay Writing",
+    "url": "https://www.coursera.org/learn/introduction-to-research-for-essay-writing",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "UC Irvine",
+    "hoursBySource": {
+      "XLS": 20
+    }
+  },
+  {
+    "id": "K005",
+    "title": "Successful Presentation",
+    "url": "https://www.coursera.org/learn/presentation-skills",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of Colorado Boulder"
+  },
+  {
+    "id": "K006",
+    "title": "Getting Started with IT-based Entrepreneurship",
+    "url": "https://www.coursera.org/learn/getting-started-with-it-based-entrepreneurship",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "University of Minnesota",
+    "hoursBySource": {
+      "XLS": 13
+    }
+  },
+  {
+    "id": "K007",
+    "title": "Entrepreneurship 2: Launching the Start-up",
+    "url": "https://www.coursera.org/learn/wharton-launching-startup",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "Wharton (UPenn)",
+    "linkState": "requires-check"
+  },
+  {
+    "id": "K008",
+    "title": "Entrepreneurship 3: Growth Strategies",
+    "url": "https://www.coursera.org/learn/growth-strategy",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "Wharton (UPenn)",
+    "linkState": "requires-check"
+  },
+  {
+    "id": "K009",
+    "title": "Entrepreneurship 4: Financing and Profitability",
+    "url": "https://www.coursera.org/learn/wharton-entrepreneurship-financing-profitabilty",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "Wharton (UPenn)",
+    "linkState": "requires-check"
+  },
+  {
+    "id": "K010",
+    "title": "Digital Business Models",
+    "url": "https://www.coursera.org/learn/digital-business-models",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "TE"
+    ],
+    "provider": "Lund University",
+    "hoursBySource": {
+      "XLS": 10
+    }
+  },
+  {
+    "id": "K011",
+    "title": "Service-Oriented Architecture",
+    "url": "https://www.coursera.org/learn/service-oriented-architecture",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Alberta",
+    "hoursBySource": {
+      "XLS": 10,
+      "LIST": "10"
+    }
+  },
+  {
+    "id": "K012",
+    "title": "Functions, Methods, and Interfaces in Go",
+    "url": "https://www.coursera.org/learn/golang-functions-methods",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "UC Irvine",
+    "hoursBySource": {
+      "XLS": 11,
+      "LIST": "~10"
+    }
+  },
+  {
+    "id": "K013",
+    "title": "Foundations of Software Architecture and Monolithic Systems",
+    "url": "https://www.coursera.org/learn/packt-software-architecture-foundations-and-intro-to-microservices-l0tqw",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "XLS": 8
+    }
+  },
+  {
+    "id": "K014",
+    "title": "Learn HTTP Servers in Go",
+    "url": "https://www.boot.dev/courses/learn-http-servers-golang",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Boot.dev"
+  },
+  {
+    "id": "K015",
+    "title": "Introduction to Software Testing",
+    "url": "https://www.coursera.org/learn/introduction-software-testing",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "University of Minnesota",
+    "hoursBySource": {
+      "XLS": 30
+    }
+  },
+  {
+    "id": "K016",
+    "title": "Web and Mobile Testing with Selenium",
+    "url": "https://www.coursera.org/learn/web-mobile-testing",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "University of Minnesota",
+    "hoursBySource": {
+      "XLS": 20
+    }
+  },
+  {
+    "id": "K017",
+    "title": "Advanced Selenium WebDriver Techniques and Framework Design",
+    "url": "https://www.coursera.org/learn/packt-advanced-selenium-webdriver-techniques-and-framework-design-lfsuw",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "XLS": 16,
+      "LIST": "~16"
+    }
+  },
+  {
+    "id": "K018",
+    "title": "REST API Automation With REST Assured - Zero To Hero",
+    "url": "https://www.coursera.org/learn/packt-rest-api-automation-with-rest-assured-zero-to-hero-mrkwj",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "XLS": 20
+    }
+  },
+  {
+    "id": "K019",
+    "title": "Master Performance Testing Fundamentals",
+    "url": "https://www.coursera.org/learn/master-performance-testing-fundamentals",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "EDUCBA",
+    "hoursBySource": {
+      "XLS": 4
+    }
+  },
+  {
+    "id": "K020",
+    "title": "ETL Testing Basics for Databases",
+    "url": "https://www.coursera.org/learn/etl-testing-basics-2",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Coursera",
+    "hoursBySource": {
+      "XLS": 4
+    }
+  },
+  {
+    "id": "K021",
+    "title": "Testing java spring apps with JUnit, Mockito, Wiremock",
+    "url": "https://www.udemy.com/course/testing-java-apps-with-junit-mockito-wiremock-and-postman",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "George Covrig",
+    "hoursBySource": {
+      "XLS": 8
+    }
+  },
+  {
+    "id": "K022",
+    "title": "Foundations of Cybersecurity",
+    "url": "https://www.coursera.org/learn/foundations-of-cybersecurity",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "hoursBySource": {
+      "XLS": 10
+    }
+  },
+  {
+    "id": "K023",
+    "title": "Play It Safe: Manage Security Risks",
+    "url": "https://www.coursera.org/learn/manage-security-risks",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "hoursBySource": {
+      "XLS": 9
+    }
+  },
+  {
+    "id": "K024",
+    "title": "Connect and Protect: Networks and Network Security",
+    "url": "https://www.coursera.org/learn/networks-and-network-security",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google",
+    "hoursBySource": {
+      "XLS": 12
+    }
+  },
+  {
+    "id": "K025",
+    "title": "Introduction to Cybersecurity Tools & Cyberattacks",
+    "url": "https://www.coursera.org/learn/introduction-cybersecurity-cyber-attacks",
+    "kind": "course",
+    "sources": [
+      "XLS",
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "IBM",
+    "hoursBySource": {
+      "XLS": 2
+    }
+  },
+  {
+    "id": "K026",
+    "title": "Operating Systems: Overview, Administration, and Security",
+    "url": "https://www.coursera.org/learn/operating-systems-overview-administration-security",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "IBM",
+    "hoursBySource": {
+      "XLS": 19
+    }
+  },
+  {
+    "id": "K027",
+    "title": "Symmetric Cryptography",
+    "url": "https://www.coursera.org/learn/symmetric-crypto",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "University of Colorado System",
+    "hoursBySource": {
+      "XLS": 12
+    }
+  },
+  {
+    "id": "K028",
+    "title": "Cryptographic Hash and Integrity Protection",
+    "url": "https://www.coursera.org/learn/cryptographic-hash-integrity-protection",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "University of Colorado System",
+    "hoursBySource": {
+      "XLS": 9
+    }
+  },
+  {
+    "id": "K029",
+    "title": "Asymmetric Cryptography and Key Management",
+    "url": "https://www.coursera.org/learn/asymmetric-crypto",
+    "kind": "course",
+    "sources": [
+      "XLS"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "University of Colorado System",
+    "hoursBySource": {
+      "XLS": 9
+    }
+  },
+  {
+    "id": "K030",
+    "title": "Google Project Management Professional Certificate",
+    "url": "https://www.coursera.org/professional-certificates/google-project-management",
+    "kind": "professional-certificate",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "Google"
+  },
+  {
+    "id": "K031",
+    "title": "Project Planning: Putting It All Together",
+    "url": "https://www.coursera.org/learn/project-planning-google",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "Google"
+  },
+  {
+    "id": "K032",
+    "title": "Software Development Lifecycle Specialization",
+    "url": "https://www.coursera.org/specializations/software-development-lifecycle",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "CAP"
+    ],
+    "provider": "University of Minnesota",
+    "also": [
+      "Software Development Lifecycle"
+    ]
+  },
+  {
+    "id": "K033",
+    "title": "Google Cybersecurity Professional Certificate",
+    "url": "https://www.coursera.org/professional-certificates/google-cybersecurity",
+    "kind": "professional-certificate",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google"
+  },
+  {
+    "id": "K034",
+    "title": "Tools of the Trade: Linux and SQL",
+    "url": "https://www.coursera.org/learn/linux-and-sql",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "SEC"
+    ],
+    "provider": "Google"
+  },
+  {
+    "id": "K035",
+    "title": "Software Testing and Automation",
+    "url": "https://www.coursera.org/specializations/software-testing-automation",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "University of Minnesota",
+    "hoursBySource": {
+      "LIST": "95"
+    }
+  },
+  {
+    "id": "K036",
+    "title": "Software Quality Assurance and Testing",
+    "url": "https://www.coursera.org/specializations/software-quality-assurance-testing",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Board Infinity",
+    "hoursBySource": {
+      "LIST": "~62"
+    }
+  },
+  {
+    "id": "K037",
+    "title": "Software Testing and Quality Engineering",
+    "url": "https://www.coursera.org/specializations/software-testing-quality-engineering",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "25"
+    }
+  },
+  {
+    "id": "K038",
+    "title": "Learn Automation Testing with Java and Selenium WebDriver",
+    "url": "https://www.coursera.org/specializations/packt-learn-automation-testing-with-java-and-selenium-webdriver",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "48"
+    }
+  },
+  {
+    "id": "K039",
+    "title": "Learn Selenium WebDriver with Java",
+    "url": "https://www.coursera.org/specializations/packt-learn-selenium-webdriver-with-java",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "≥20"
+    }
+  },
+  {
+    "id": "K040",
+    "title": "Introduction to Software Quality Assurance",
+    "url": "https://www.coursera.org/learn/introduction-to-software-quality-assurance",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "~10"
+    }
+  },
+  {
+    "id": "K041",
+    "title": "Software Testing Life Cycle (STLC) Fundamentals",
+    "url": "https://www.coursera.org/learn/software-testing-life-cycle-fundamentals",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "6"
+    }
+  },
+  {
+    "id": "K042",
+    "title": "Test Management in Software Testing",
+    "url": "https://www.coursera.org/learn/test-management-in-software-testing",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "4"
+    }
+  },
+  {
+    "id": "K043",
+    "title": "Mastering Java and Advanced Tools for Selenium Automation",
+    "url": "https://www.coursera.org/learn/packt-mastering-java-and-advanced-tools-for-selenium-automation-lfsuw",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt"
+  },
+  {
+    "id": "K044",
+    "title": "JMeter Training for Beginners",
+    "url": "https://www.coursera.org/learn/jmeter-training-for-beginners",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "4"
+    },
+    "legacyUrl": "https://www.coursera.org/learn/jmeter"
+  },
+  {
+    "id": "K045",
+    "title": "Performance Testing with JMeter for absolute beginners",
+    "url": "https://www.coursera.org/projects/performance-testing-with-jmeter-for-absolute-beginners",
+    "kind": "project",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "2.5"
+    },
+    "also": [
+      "Performance Testing with JMeter for Absolute Beginners (Short Course)"
+    ]
+  },
+  {
+    "id": "K046",
+    "title": "REST Assured - Mastering API Testing",
+    "url": "https://www.coursera.org/learn/rest-assured-mastering-api-testing",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "7"
+    }
+  },
+  {
+    "id": "K047",
+    "title": "API Testing Using Rest Assured Test Automation Tool",
+    "url": "https://www.coursera.org/projects/api-testing-using-rest-assured-test-automation-tool",
+    "kind": "project",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "hoursBySource": {
+      "LIST": "2"
+    },
+    "also": [
+      "API Testing Using Rest Assured Test Automation Tool (Short Course)"
+    ]
+  },
+  {
+    "id": "K048",
+    "title": "Master Java Unit Testing with Spring Boot and Mockito",
+    "url": "https://www.coursera.org/learn/packt-master-java-unit-testing-with-spring-boot-and-mockito-zxzu2",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt"
+  },
+  {
+    "id": "K049",
+    "title": "Intermediate Selenium WebDriver and Automation",
+    "url": "https://www.coursera.org/learn/packt-intermediate-selenium-webdriver-and-automation-4toso",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "QA"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "~13"
+    }
+  },
+  {
+    "id": "K050",
+    "title": "Project Risk Management",
+    "url": "https://www.coursera.org/learn/project-risk-management-",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ]
+  },
+  {
+    "id": "K051",
+    "title": "Object-Oriented Analysis and Design: Patterns and Principles",
+    "url": "https://www.coursera.org/learn/object-oriented-analysis-and-design-patterns-and-principles",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "hoursBySource": {
+      "LIST": "~30"
+    }
+  },
+  {
+    "id": "K052",
+    "title": "Software Design and Architecture",
+    "url": "https://www.coursera.org/specializations/software-design-architecture",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of Alberta",
+    "hoursBySource": {
+      "LIST": "52"
+    }
+  },
+  {
+    "id": "K053",
+    "title": "Object-Oriented Analysis and Design",
+    "url": "https://www.coursera.org/specializations/object-oriented-analysis-design",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "hoursBySource": {
+      "LIST": "~80"
+    },
+    "also": [
+      "Object-Oriented Analysis & Design"
+    ]
+  },
+  {
+    "id": "K054",
+    "title": "Programming with Golang",
+    "url": "https://www.coursera.org/learn/programming-with-golang",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Edureka",
+    "hoursBySource": {
+      "LIST": "14"
+    }
+  },
+  {
+    "id": "K055",
+    "title": "Go Essentials: Concurrency, gRPC & More",
+    "url": "https://www.coursera.org/learn/packt-go-essentials-a-practical-guide-to-concurrency-grpc-and-more-dzeka",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "8"
+    }
+  },
+  {
+    "id": "K056",
+    "title": "ASP.NET Core MVC Fundamentals & CRUD",
+    "url": "https://www.coursera.org/learn/packt-asp-net-core-mvc-fundamentals-crud-asd1a",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "11"
+    },
+    "also": [
+      "ASP.NET Core MVC Fundamentals & CRUD Operations"
+    ]
+  },
+  {
+    "id": "K057",
+    "title": "Complete ASP.NET Core and Entity Framework Development",
+    "url": "https://www.coursera.org/specializations/packt-complete-asp-net-core-and-entity-framework-development",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "31"
+    }
+  },
+  {
+    "id": "K058",
+    "title": "Go for Cloud and Networks",
+    "url": "https://www.coursera.org/learn/go-for-cloud-and-networks",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Edureka",
+    "hoursBySource": {
+      "LIST": "6"
+    }
+  },
+  {
+    "id": "K059",
+    "title": "Microservices Architecture: Design Patterns & Principles",
+    "url": "https://www.coursera.org/specializations/packt-microservices-architecture-design-patterns-principles",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Packt",
+    "hoursBySource": {
+      "LIST": "≥11"
+    }
+  },
+  {
+    "id": "K060",
+    "title": "Advanced Golang Concepts",
+    "url": "https://www.coursera.org/learn/advanced-golang-concepts",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Edureka",
+    "hoursBySource": {
+      "LIST": "10"
+    }
+  },
+  {
+    "id": "K061",
+    "title": "Mastering Multithreading with Go",
+    "url": "https://www.coursera.org/learn/mastering-multithreading-with-go",
+    "kind": "course",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Edureka",
+    "hoursBySource": {
+      "LIST": "8"
+    }
+  },
+  {
+    "id": "K062",
+    "title": "Go Programming Language",
+    "url": "https://www.coursera.org/specializations/go-programming-language",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "Edureka",
+    "hoursBySource": {
+      "LIST": "38"
+    }
+  },
+  {
+    "id": "K063",
+    "title": "Programming with Google Go",
+    "url": "https://www.coursera.org/specializations/google-golang",
+    "kind": "specialization",
+    "sources": [
+      "LIST"
+    ],
+    "subjects": [
+      "ARCH"
+    ],
+    "provider": "University of California, Irvine",
+    "hoursBySource": {
+      "LIST": "~40"
+    }
+  }
+]

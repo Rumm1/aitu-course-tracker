@@ -1,0 +1,3115 @@
+{
+  "СИЛЛАБУСЫ SE": [
+    [
+      "QA",
+      1,
+      "Software Quality Assurance and Testing Fundamentals. Functional / non-functional testing; black-box / white-box; sanity, smoke, regression. Bugs/defects; bug life cycle; reporting and tracking."
+    ],
+    [
+      "QA",
+      2,
+      "STLC. Test planning, preparation, execution, reporting. Pyramid, Ice-cream Cone, Agile Quadrant, Honeycomb test strategies."
+    ],
+    [
+      "QA",
+      3,
+      "UI test automation with Selenium WebDriver. Locating elements; Maven; browser setup; XPath/CSS; dynamic elements; dynamic tables."
+    ],
+    [
+      "QA",
+      4,
+      "Advanced Selenium WebDriver: wait types, switching windows and iframes, Actions class, Select class, key press events."
+    ],
+    [
+      "QA",
+      5,
+      "TestNG setup, annotations/asserts, parameters/parallel execution, ITestResult, listeners/reporters, logging; Log4j2, Extent, Allure; screenshots."
+    ],
+    [
+      "QA",
+      6,
+      "Cross-browser testing: BrowserStack, SauceLabs. Data-driven and keyword-driven framework setup. Apache POI. Page Object Model."
+    ],
+    [
+      "QA",
+      7,
+      "Database testing. JDBC connection. ETL testing. Database migration testing. Performance testing. JMeter."
+    ],
+    [
+      "QA",
+      8,
+      "BDD framework; Cucumber; Gherkin; feature files; step definitions; hooks; scenarios/outlines; data tables; switching to BDD."
+    ],
+    [
+      "QA",
+      9,
+      "API testing; CRUD; status codes; REST/SOAP; JSON/XML; Swagger UI; Postman collections; REST Assured setup."
+    ],
+    [
+      "QA",
+      10,
+      "Microservices architecture testing. Isolated and integrated testing. Mocking/stubbing. WireMock with JUnit5. CI/CD and Jenkins."
+    ],
+    [
+      "SEC",
+      1,
+      "Introduction to Information Security. CIA Triad. States of Data. Cybersecurity basics. Threat Actors."
+    ],
+    [
+      "SEC",
+      2,
+      "Threat landscape. Common threats/attacks. Malware. DDoS. Social engineering."
+    ],
+    [
+      "SEC",
+      3,
+      "Security policies, regulations and standards."
+    ],
+    [
+      "SEC",
+      4,
+      "Cryptography. Encryption and hashing. Digital signatures. Digital certificates."
+    ],
+    [
+      "SEC",
+      5,
+      "Access control. AAA: authentication, authorization and accounting."
+    ],
+    [
+      "SEC",
+      6,
+      "Endpoint security. OS security. Antimalware protection. Host-based intrusion prevention."
+    ],
+    [
+      "SEC",
+      7,
+      "Network security. Firewalls. IDS. VPNs."
+    ],
+    [
+      "SEC",
+      8,
+      "Risk assessment. Vulnerability assessment."
+    ],
+    [
+      "SEC",
+      9,
+      "Security in applications and software development."
+    ],
+    [
+      "SEC",
+      10,
+      "Incident response and management."
+    ],
+    [
+      "GO",
+      1,
+      "Course introduction/policies. Environment setup. Introduction to Golang."
+    ],
+    [
+      "GO",
+      2,
+      "HTTP."
+    ],
+    [
+      "GO",
+      3,
+      "Routing."
+    ],
+    [
+      "GO",
+      4,
+      "Persistence layer. Repository pattern."
+    ],
+    [
+      "GO",
+      5,
+      "MVC pattern."
+    ],
+    [
+      "GO",
+      6,
+      "Clean Architecture."
+    ],
+    [
+      "GO",
+      7,
+      "Microservices."
+    ],
+    [
+      "GO",
+      8,
+      "Microservices."
+    ],
+    [
+      "GO",
+      9,
+      "Project week. Preparation part."
+    ],
+    [
+      "GO",
+      10,
+      "Endterm. Project defense."
+    ],
+    [
+      "UML",
+      1,
+      "Introduction; use cases; risk assessment and mitigation."
+    ],
+    [
+      "UML",
+      2,
+      "Architecture basics: software architecture and software abstractions."
+    ],
+    [
+      "UML",
+      3,
+      "Architectural modeling: domain model, informational model, design model, context diagrams, design decisions."
+    ],
+    [
+      "UML",
+      4,
+      "Decomposition, encapsulation and modeling elements."
+    ],
+    [
+      "UML",
+      5,
+      "Modeling elements. Midterm exam."
+    ],
+    [
+      "UML",
+      6,
+      "Creating the model: UML basics; scenarios/sequence diagrams; UML component diagram."
+    ],
+    [
+      "UML",
+      7,
+      "UML class diagrams; design patterns; classification of patterns."
+    ],
+    [
+      "UML",
+      8,
+      "Architectural styles: model-centered/layered; refining models; anti-patterns and quality diagrams."
+    ],
+    [
+      "UML",
+      9,
+      "Using architectural models: dependencies; humans as analysts; architecture-based performance analysis."
+    ],
+    [
+      "UML",
+      10,
+      "Course reflection and problem-solving session. Endterm exam."
+    ],
+    [
+      "CAP",
+      1,
+      "Introduction/policies. What is a Capstone Project? Examples, importance and goals."
+    ],
+    [
+      "CAP",
+      2,
+      "Listing projects; project topics."
+    ],
+    [
+      "CAP",
+      3,
+      "Project proposal."
+    ],
+    [
+      "CAP",
+      4,
+      "Literature survey / literature review."
+    ],
+    [
+      "CAP",
+      5,
+      "Scope of the project."
+    ],
+    [
+      "CAP",
+      6,
+      "Methodology."
+    ],
+    [
+      "CAP",
+      7,
+      "Details of designs, working and processes."
+    ],
+    [
+      "CAP",
+      8,
+      "Results and applications."
+    ],
+    [
+      "CAP",
+      9,
+      "Conclusions and future scope; references and bibliography."
+    ],
+    [
+      "CAP",
+      10,
+      "Final presentation and final paper."
+    ],
+    [
+      "TE",
+      1,
+      "Fundamentals of technological entrepreneurship. Startups."
+    ],
+    [
+      "TE",
+      2,
+      "Idea generation: finding a problem that needs to be solved."
+    ],
+    [
+      "TE",
+      3,
+      "Building a team."
+    ],
+    [
+      "TE",
+      4,
+      "Target audience. Value proposition."
+    ],
+    [
+      "TE",
+      5,
+      "Customer development."
+    ],
+    [
+      "TE",
+      6,
+      "Market. Market capacity assessment. Competition analysis."
+    ],
+    [
+      "TE",
+      7,
+      "MVP: from idea to product."
+    ],
+    [
+      "TE",
+      8,
+      "MVP: testing with customers."
+    ],
+    [
+      "TE",
+      9,
+      "Startup metrics. Unit economics. Startup finance. Monetization."
+    ],
+    [
+      "TE",
+      10,
+      "Business model canvas."
+    ]
+  ],
+  "ПОДТЕМЫ SE": [
+    [
+      "QA",
+      1,
+      "Software Quality Assurance and Testing Fundamentals",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      1,
+      "Functional testing",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      1,
+      "Non-functional testing",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      1,
+      "Black-box testing",
+      "F104",
+      "Прямое"
+    ],
+    [
+      "QA",
+      1,
+      "White-box testing",
+      "F104",
+      "Прямое"
+    ],
+    [
+      "QA",
+      1,
+      "Sanity testing",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      1,
+      "Smoke testing",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      1,
+      "Regression testing",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      1,
+      "Bugs/defects and bug lifecycle",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      1,
+      "Bug reporting and tracking",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      2,
+      "STLC",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      2,
+      "Test planning",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      2,
+      "Test preparation",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      2,
+      "Test execution",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      2,
+      "Test reporting",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      2,
+      "Pyramid test strategy",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      2,
+      "Ice-cream Cone strategy",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      2,
+      "Agile Quadrants strategy",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      2,
+      "Honeycomb strategy",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      3,
+      "Selenium WebDriver framework and setup",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Locating elements",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Maven build management",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Browser setup",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Advanced XPath and CSS selectors",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Dynamic elements",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      3,
+      "Dynamic tables",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Wait types",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Switching windows",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Switching iframes",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Actions class",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Select class",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      4,
+      "Key press events",
+      "Q2",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "TestNG setup",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Annotations and assertions",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Parameters",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Parallel execution",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "ITestResult",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Listeners",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Reporters",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Logging with Log4j/Log4j2",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Extent Reports",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      5,
+      "Allure Reports",
+      "Q3",
+      "Проверить"
+    ],
+    [
+      "QA",
+      5,
+      "Screenshots",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "Cross-browser testing",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "BrowserStack",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "SauceLabs",
+      "Q4",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "Data-driven development/framework",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "Keyword-driven framework",
+      "Q3",
+      "Проверить"
+    ],
+    [
+      "QA",
+      6,
+      "Apache POI",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      6,
+      "Page Object Model",
+      "Q3",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "Database testing",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "JDBC connection",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "ETL testing",
+      "Q9",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "Database migration testing",
+      "Q10",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "Performance testing",
+      "Q8",
+      "Прямое"
+    ],
+    [
+      "QA",
+      7,
+      "JMeter",
+      "Q8",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "BDD framework",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Cucumber and Gherkin",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Feature files",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Step definitions",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Hooks",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Scenario and Scenario Outline",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Data Tables",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      8,
+      "Switching to BDD framework",
+      "Q6",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "API testing and CRUD",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "HTTP status codes",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "REST vs SOAP",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "JSON and XML",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "Swagger UI",
+      "Q13",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "Postman",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "Postman Collections",
+      "Q13",
+      "Прямое"
+    ],
+    [
+      "QA",
+      9,
+      "REST Assured library setup and API automation",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      10,
+      "Microservices architecture testing",
+      "Q12",
+      "Прямое"
+    ],
+    [
+      "QA",
+      10,
+      "Isolated testing",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      10,
+      "Integrated testing",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "QA",
+      10,
+      "Mocking and stubbing",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      10,
+      "WireMock setup",
+      "Q7",
+      "Прямое"
+    ],
+    [
+      "QA",
+      10,
+      "WireMock with JUnit5",
+      "Q7",
+      "Проверить"
+    ],
+    [
+      "QA",
+      10,
+      "CI/CD with Jenkins",
+      "Q5",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      1,
+      "Information security and CIA triad",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      1,
+      "States of data",
+      "S3",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      1,
+      "Cybersecurity basics",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      1,
+      "Threat actors",
+      "S3",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      2,
+      "Threat landscape and common attacks",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      2,
+      "Malware types",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      2,
+      "DDoS attacks",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      2,
+      "Social engineering",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      3,
+      "Security policies",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      3,
+      "Regulations and compliance",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      3,
+      "Security standards",
+      "S2",
+      "Проверить"
+    ],
+    [
+      "SEC",
+      4,
+      "Cryptography and encryption",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      4,
+      "Hashing",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      4,
+      "Digital signatures",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      4,
+      "Digital certificates",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      5,
+      "Access control",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      5,
+      "Authentication",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      5,
+      "Authorization",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      5,
+      "Accounting",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      6,
+      "Endpoint security",
+      "S7",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      6,
+      "Operating system security",
+      "S7",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      6,
+      "Antimalware protection",
+      "S7",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      6,
+      "Host-based Intrusion Prevention (HIPS)",
+      "S7",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      7,
+      "Network security",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      7,
+      "Firewalls",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      7,
+      "IDS",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      7,
+      "VPNs",
+      "S1",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      8,
+      "Risk assessment",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      8,
+      "Vulnerability assessment",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      9,
+      "Application security",
+      "F103",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      9,
+      "Secure software development",
+      "F103",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      10,
+      "Incident response",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "SEC",
+      10,
+      "Incident management",
+      "S2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      1,
+      "Environment setup",
+      "G1",
+      "Прямое"
+    ],
+    [
+      "GO",
+      1,
+      "Introduction to Golang",
+      "G1",
+      "Прямое"
+    ],
+    [
+      "GO",
+      2,
+      "HTTP requests and methods",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      3,
+      "Routing",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      3,
+      "Middleware",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      4,
+      "Persistence layer / database access",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      4,
+      "Repository pattern",
+      "G3",
+      "Проверить"
+    ],
+    [
+      "GO",
+      5,
+      "MVC principles",
+      "U2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      5,
+      "MVC implementation in Go",
+      "U2",
+      "Проверить"
+    ],
+    [
+      "GO",
+      6,
+      "Clean Architecture principles",
+      "G3",
+      "Прямое"
+    ],
+    [
+      "GO",
+      6,
+      "Clean Architecture implementation in Go",
+      "G3",
+      "Проверить"
+    ],
+    [
+      "GO",
+      7,
+      "Microservices architecture",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      7,
+      "Microservices vs monolith",
+      "G2",
+      "Проверить"
+    ],
+    [
+      "GO",
+      8,
+      "Microservices implementation",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      9,
+      "Project preparation and implementation",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "GO",
+      10,
+      "Completed architecture project / assessment",
+      "G2",
+      "Прямое"
+    ],
+    [
+      "UML",
+      1,
+      "Use cases",
+      "F084",
+      "Прямое"
+    ],
+    [
+      "UML",
+      1,
+      "Risk assessment",
+      "F041",
+      "Прямое"
+    ],
+    [
+      "UML",
+      1,
+      "Risk mitigation",
+      "F041",
+      "Проверить"
+    ],
+    [
+      "UML",
+      2,
+      "Software architecture basics",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      2,
+      "Software abstractions",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      3,
+      "Domain models",
+      "F084",
+      "Прямое"
+    ],
+    [
+      "UML",
+      3,
+      "Informational model",
+      "F084",
+      "Проверить"
+    ],
+    [
+      "UML",
+      3,
+      "Design model",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      3,
+      "Context diagrams",
+      "F084",
+      "Проверить"
+    ],
+    [
+      "UML",
+      3,
+      "Design decisions",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      4,
+      "Decomposition",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      4,
+      "Encapsulation",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      4,
+      "Modeling elements",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      5,
+      "Modeling elements and model consolidation",
+      "F084",
+      "Проверить"
+    ],
+    [
+      "UML",
+      6,
+      "UML basics",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      6,
+      "Scenarios and sequence diagrams",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      6,
+      "Component diagrams",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      7,
+      "Class diagrams",
+      "U1",
+      "Прямое"
+    ],
+    [
+      "UML",
+      7,
+      "Design patterns",
+      "U2",
+      "Прямое"
+    ],
+    [
+      "UML",
+      7,
+      "Pattern classification",
+      "U2",
+      "Прямое"
+    ],
+    [
+      "UML",
+      8,
+      "Model-centered style",
+      "U3",
+      "Проверить"
+    ],
+    [
+      "UML",
+      8,
+      "Layered style",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      8,
+      "Refining architectural models",
+      "U3",
+      "Проверить"
+    ],
+    [
+      "UML",
+      8,
+      "Anti-patterns",
+      "U2",
+      "Прямое"
+    ],
+    [
+      "UML",
+      8,
+      "Creating quality diagrams",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      9,
+      "Modeling dependencies",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "UML",
+      9,
+      "Humans as Analysts",
+      "U3",
+      "Проверить"
+    ],
+    [
+      "UML",
+      9,
+      "Architecture-based performance analysis",
+      "Q12",
+      "Проверить"
+    ],
+    [
+      "UML",
+      10,
+      "Course reflection and problem solving",
+      "U3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      1,
+      "Capstone concept, examples and goals",
+      "C3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      2,
+      "Project topics and research question",
+      "C1",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      3,
+      "Project proposal",
+      "C1",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      4,
+      "Literature review",
+      "C1",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      4,
+      "Source evaluation",
+      "C2",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      5,
+      "Scope of the project",
+      "P1",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      6,
+      "Research methodology",
+      "C1",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      6,
+      "Methodology of a software project",
+      "C3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      7,
+      "Design and architecture",
+      "C3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      7,
+      "Implementation and working processes",
+      "C3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      8,
+      "Results and applications",
+      "C3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      8,
+      "Analysis and presentation of results",
+      "P3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      9,
+      "Conclusions",
+      "C2",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      9,
+      "Future scope",
+      "P3",
+      "Проверить"
+    ],
+    [
+      "CAP",
+      9,
+      "References and bibliography",
+      "C2",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      10,
+      "Final presentation",
+      "P3",
+      "Прямое"
+    ],
+    [
+      "CAP",
+      10,
+      "Final paper",
+      "C2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      1,
+      "Technological entrepreneurship fundamentals",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      1,
+      "Startups",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      2,
+      "Idea generation",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      2,
+      "Finding a problem to solve",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      3,
+      "Building a team",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      4,
+      "Target audience",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      4,
+      "Value proposition",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      5,
+      "Customer development",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      6,
+      "Market analysis",
+      "E4",
+      "Прямое"
+    ],
+    [
+      "TE",
+      6,
+      "Market capacity assessment",
+      "E4",
+      "Прямое"
+    ],
+    [
+      "TE",
+      6,
+      "Competition analysis",
+      "E4",
+      "Прямое"
+    ],
+    [
+      "TE",
+      7,
+      "MVP development: idea to product",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      8,
+      "MVP testing with customers",
+      "E2",
+      "Прямое"
+    ],
+    [
+      "TE",
+      9,
+      "Startup metrics",
+      "E3",
+      "Прямое"
+    ],
+    [
+      "TE",
+      9,
+      "Unit economics",
+      "E3",
+      "Прямое"
+    ],
+    [
+      "TE",
+      9,
+      "Startup finance",
+      "E3",
+      "Прямое"
+    ],
+    [
+      "TE",
+      9,
+      "Monetization",
+      "E3",
+      "Прямое"
+    ],
+    [
+      "TE",
+      10,
+      "Business Model Canvas",
+      "E2",
+      "Прямое"
+    ]
+  ],
+  "ПРАКТИКА И ДОКУМЕНТЫ SE": [
+    [
+      "QA",
+      "1",
+      "Exploratory Testing; Test Planning; Test Cases for Smoke Test Suite and Regression Suite",
+      "Q12",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "2",
+      "UI Automation using Selenium WebDriver: basic setups",
+      "Q2",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "3",
+      "Advanced UI Automation using Selenium WebDriver",
+      "Q2, Q3",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "4",
+      "Database Testing; JDBC; ETL; Database Migration; Performance Testing; JMeter",
+      "Q5, Q9, Q10, Q8",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "5",
+      "API Testing: REST, SOAP, CRUD, Status Codes, Swagger, Postman, RestAssured library setup",
+      "Q7, Q13",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "6",
+      "Microservices Testing; Isolated/Integrated Testing; Mocking/Stubbing; WireMock with JUnit5",
+      "Q12, Q7",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "ISO",
+      "ISO standards, quality assurance, metrics and defect prevention",
+      "Q12",
+      "2022–2023"
+    ],
+    [
+      "QA",
+      "A1–A8",
+      "Test plan/cases; UI basic/advanced; hybrid framework; BDD framework; JDBC database; API automation; full-stack automation + CI/CD",
+      "Q12, Q2, Q3, Q4, Q5, Q6, Q7",
+      "2022–2023"
+    ],
+    [
+      "SEC",
+      "1",
+      "Social Engineering",
+      "S1, S7",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "2",
+      "Threat Analysis",
+      "S3, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "3",
+      "Symmetric and Asymmetric Encryption",
+      "S1, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "4",
+      "Access Control",
+      "S1, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "5",
+      "Endpoint Security",
+      "S1, S7",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "6",
+      "Network Security",
+      "S1, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "7",
+      "Risk Management",
+      "S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "8",
+      "Incident Response",
+      "S5, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "9",
+      "Security Scanning Tools",
+      "S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "10",
+      "Security Operations Center",
+      "S5, S2",
+      "2023–2024"
+    ],
+    [
+      "SEC",
+      "Labs",
+      "Practical labs, configuration commands, quizzes and examinations",
+      "S1, S2, S5, S7",
+      "2023–2024"
+    ],
+    [
+      "ARCH",
+      "1",
+      "Golang Go Tour",
+      "G1",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "2",
+      "HTTP Request, HTTP Methods",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "3",
+      "Middleware and Routing",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "4",
+      "DAO; work with database",
+      "G2, G3",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "5",
+      "Example of MVC",
+      "U2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "6",
+      "Example of Clean Architecture",
+      "G3, G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "7",
+      "Microservices vs monolith",
+      "G2, Q12",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "8",
+      "Microservices implementation example",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "9",
+      "Project Week",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "10",
+      "Project Week",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "Final",
+      "Architecture project and defense",
+      "G2",
+      "Мукатаев • Go SE + CS"
+    ],
+    [
+      "ARCH",
+      "1",
+      "Use Case; prioritizing and mitigating risks",
+      "F084, F041",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "2",
+      "Project Risk Assessment; analyze architecture diagrams",
+      "F041, U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "3",
+      "Initial Design",
+      "U1, U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "4",
+      "Create an Effective Encapsulation",
+      "U1",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "5",
+      "Consolidating the Model; Diagramming the Components",
+      "U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "6",
+      "Creating Model",
+      "U1, U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "7",
+      "Patterns and Styles",
+      "U2, U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "8",
+      "Using the Architecture",
+      "U3",
+      "Смаийл • UML"
+    ],
+    [
+      "ARCH",
+      "Final",
+      "Practical examination; risk-driven architecture documentation",
+      "U1, U2, U3, F041",
+      "Смаийл • UML"
+    ],
+    [
+      "CAP",
+      "1",
+      "Project topics",
+      "C1, P1",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "2",
+      "Capstone project proposal draft",
+      "C1, P1",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "3",
+      "Capstone project proposal",
+      "C1, P1",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "4",
+      "Discuss progress on capstone projects",
+      "P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "5",
+      "Project progress",
+      "P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "6",
+      "Discuss progress on capstone projects",
+      "P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "7",
+      "Discuss progress on capstone projects",
+      "P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "8",
+      "Project progress",
+      "P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "9",
+      "Final presentation",
+      "C2, P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "10",
+      "Final presentation and final paper",
+      "C2, P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "Final",
+      "Proposal, weekly progress, progress reports, final presentation, team evaluation, final paper",
+      "C1, C2, P1, P3, C3",
+      "SE 2023–2024"
+    ],
+    [
+      "CAP",
+      "Technical",
+      "Software Engineering degree header; learning outcomes mention telecommunication",
+      "C3",
+      "SE 2023–2024"
+    ],
+    [
+      "TE",
+      "1",
+      "Marketing",
+      "E4, E3",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "2",
+      "Testing channels and scaling",
+      "E3, E4",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "3",
+      "Investing; Fundraising",
+      "E3",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "4",
+      "PR of a startup",
+      "E3, F079",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "5",
+      "Participation at hackathons",
+      "Не найдено",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "6",
+      "Participation at startup battles and competitions",
+      "Не найдено",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "7",
+      "Building pitch deck",
+      "F079",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "8",
+      "Sales",
+      "E4, E3",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "9",
+      "Set up, hire and scale growth strategy and team",
+      "E2, E3",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "10",
+      "How to pitch a startup",
+      "F079",
+      "2022–2023"
+    ],
+    [
+      "TE",
+      "Final",
+      "Business idea/value proposition/model/competition/MVP/cost-benefit/final paper; Demo day/pitch",
+      "E2, E3, E4, F079, P1",
+      "2022–2023"
+    ]
+  ],
+  "АЛЬТЕРНАТИВНЫЕ СВЯЗИ ИЗ МАТРИЦ XLS": [
+    [
+      "CAP",
+      1,
+      "Introduction; What is a Capstone Project; goals",
+      [
+        "C1"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      2,
+      "Listing projects; Project topics",
+      [
+        "C1",
+        "K004"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      3,
+      "Project proposal",
+      [
+        "C1",
+        "F071"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      4,
+      "Literature Review",
+      [
+        "C1"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      5,
+      "Scope of the project",
+      [
+        "F071"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      6,
+      "Methodology (qualitative vs quantitative)",
+      [
+        "K001",
+        "K002"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      7,
+      "Details of designs, working and processes",
+      [
+        "K003"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      8,
+      "Results and Applications",
+      [
+        "F067"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      9,
+      "Conclusions and future scope; References and Bibliography",
+      [
+        "F067",
+        "K004"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      10,
+      "Final presentation and final paper",
+      [
+        "F067",
+        "K005"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      "LO",
+      "Teamwork",
+      [
+        "F071"
+      ],
+      "Да"
+    ],
+    [
+      "CAP",
+      "LO",
+      "Plagiarism check",
+      [
+        "K004"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      1,
+      "Fundamentals of Technological Entrepreneurship. Startups",
+      [
+        "K006"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      2,
+      "Idea generation: finding a problem",
+      [
+        "K006",
+        "F078"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      3,
+      "Building a team",
+      [
+        "K006",
+        "K007"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      4,
+      "Target audience. Value proposition",
+      [
+        "E4"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      5,
+      "Customer development",
+      [
+        "F078",
+        "E4"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      6,
+      "Market capacity assessment. Competition analysis",
+      [
+        "E4"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      7,
+      "MVP: From idea to product",
+      [
+        "F079",
+        "K007"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      8,
+      "MVP: Testing MVP with customer",
+      [
+        "F078",
+        "K007"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      9,
+      "Startup metrics. Unit economics. Finance. Monetization",
+      [
+        "F079",
+        "K009"
+      ],
+      "Частично — unit economics (CAC/LTV) прямо не разбирается"
+    ],
+    [
+      "TE",
+      10,
+      "Business model canvas",
+      [
+        "E4",
+        "F079",
+        "K010"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      "СРС",
+      "Marketing; Testing channels and scaling; PR; Sales; Growth team",
+      [
+        "K008"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      "СРС",
+      "Investing. Fundraising",
+      [
+        "F079",
+        "K009"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      "СРС",
+      "Building pitch deck; How to pitch a startup",
+      [
+        "F079",
+        "K007"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      "СРС",
+      "Participation at hackathons, startup battles",
+      [],
+      "Нет — это практика, онлайн-курсом не закрывается"
+    ],
+    [
+      "TE",
+      "LO",
+      "Online innovation, online business models, disruption",
+      [
+        "K010"
+      ],
+      "Да"
+    ],
+    [
+      "TE",
+      "LO",
+      "Team relationships, collaboration",
+      [
+        "K007"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "1 (S)",
+      "Course intro: Use Cases, Risk Assessment, Risk mitigation",
+      [
+        "U3",
+        "F084"
+      ],
+      "Частично — risk-driven подход (Fairbanks) отдельно не разбирается"
+    ],
+    [
+      "ARCH",
+      "2 (S)",
+      "Architecture Basics: software architecture, abstractions",
+      [
+        "U1",
+        "U3"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "3 (S)",
+      "Architectural Modeling: domain, informational, design models; context diagrams; design decisions",
+      [
+        "U3",
+        "F084"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "4 (S)",
+      "Decomposition, Encapsulation and Modeling Elements",
+      [
+        "U1"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "5 (S)",
+      "Modeling Elements",
+      [
+        "U1",
+        "F084"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "6 (S)",
+      "UML basics; sequence diagrams; component diagrams",
+      [
+        "U3",
+        "F084"
+      ],
+      "Частично — sequence diagrams в описаниях курсов не указаны"
+    ],
+    [
+      "ARCH",
+      "7 (S)",
+      "UML class diagrams; design patterns; classification of patterns",
+      [
+        "U1",
+        "U2"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "8 (S)",
+      "Architectural styles: model-centered, layered; anti-patterns",
+      [
+        "U2",
+        "U3"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "9 (S)",
+      "Using architectural models: dependencies, architecture-based performance analysis",
+      [
+        "U3"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "10 (S)",
+      "Course reflection, problem solving",
+      [],
+      "Не требуется (повторение и экзамен)"
+    ],
+    [
+      "ARCH",
+      "1 (M)",
+      "Setting up the environment. Introduction to Golang",
+      [
+        "G1",
+        "K012"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "2 (M)",
+      "HTTP; HTTP requests, methods",
+      [
+        "K011",
+        "K014"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "3 (M)",
+      "Routing; middleware",
+      [
+        "K014"
+      ],
+      "Да (только через Boot.dev)"
+    ],
+    [
+      "ARCH",
+      "4 (M)",
+      "Persistence layer, Repository pattern, DAO",
+      [
+        "K012",
+        "K014"
+      ],
+      "Частично — repository pattern прямо не назван"
+    ],
+    [
+      "ARCH",
+      "5 (M)",
+      "MVC pattern",
+      [
+        "U2"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "6 (M)",
+      "Clean Architecture",
+      [
+        "U2",
+        "U3"
+      ],
+      "Частично — отдельного курса по Clean Architecture нет"
+    ],
+    [
+      "ARCH",
+      "7–8 (M)",
+      "Microservices; microservices vs monolith",
+      [
+        "K011",
+        "K013"
+      ],
+      "Да"
+    ],
+    [
+      "ARCH",
+      "9–10 (M)",
+      "Project week, project defense",
+      [],
+      "Не требуется (проект)"
+    ],
+    [
+      "QA",
+      1,
+      "SQA fundamentals; functional/non-functional types; black-box, white-box; smoke, sanity, regression; bug life cycle, bug reporting",
+      [
+        "K015",
+        "F104"
+      ],
+      "Да"
+    ],
+    [
+      "QA",
+      2,
+      "STLC; test planning, execution, reporting; testing strategies (pyramid, agile quadrants)",
+      [
+        "K015",
+        "K016"
+      ],
+      "Частично — test pyramid, honeycomb и agile quadrants по названию не указаны"
+    ],
+    [
+      "QA",
+      3,
+      "Selenium WebDriver setup, Maven, locators (XPath, CSS), dynamic elements",
+      [
+        "K016",
+        "F088"
+      ],
+      "Да"
+    ],
+    [
+      "QA",
+      4,
+      "Advanced Selenium: waits, windows, iFrames, Actions, Select",
+      [
+        "F088",
+        "K017"
+      ],
+      "Да"
+    ],
+    [
+      "QA",
+      5,
+      "TestNG; listeners, reporters; Log4j2; Extent, Allure reports",
+      [
+        "K017"
+      ],
+      "Частично — Log4j2 и Allure не указаны"
+    ],
+    [
+      "QA",
+      6,
+      "Cross-browser (BrowserStack, SauceLabs); data-driven, keyword-driven; Apache POI",
+      [
+        "F088",
+        "Q5"
+      ],
+      "Частично — keyword-driven и BrowserStack/SauceLabs явно не указаны"
+    ],
+    [
+      "QA",
+      7,
+      "Database testing, JDBC; ETL testing; DB migration testing; performance, JMeter",
+      [
+        "K016",
+        "K019",
+        "K020"
+      ],
+      "Частично — JDBC и migration testing не покрыты"
+    ],
+    [
+      "QA",
+      8,
+      "BDD: Cucumber, Gherkin, feature files, step definitions, hooks",
+      [
+        "F104",
+        "K017"
+      ],
+      "Да"
+    ],
+    [
+      "QA",
+      9,
+      "API testing: CRUD, status codes, REST vs SOAP, JSON/XML, Swagger, Postman, RestAssured",
+      [
+        "K018"
+      ],
+      "Частично — SOAP и Swagger не указаны"
+    ],
+    [
+      "QA",
+      10,
+      "Microservices testing; mocking and stubbing; WireMock + JUnit5; CI/CD, Jenkins",
+      [
+        "Q5",
+        "K018",
+        "K021"
+      ],
+      "Да (WireMock только через Udemy)"
+    ],
+    [
+      "QA",
+      "LO",
+      "QA process, metrics, defect prevention",
+      [
+        "K015"
+      ],
+      "Частично"
+    ],
+    [
+      "QA",
+      "LO",
+      "ISO standards for software quality",
+      [],
+      "Нет — отдельного курса не найдено"
+    ],
+    [
+      "SEC",
+      1,
+      "Introduction to Information Security. CIA Triad. States of Data. Cybersecurity basics. Threat Actors",
+      [
+        "K022",
+        "K025"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      2,
+      "Threat Landscape. Common Threats and Attacks. Malware types. DDoS. Social engineering",
+      [
+        "S3",
+        "K025"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      3,
+      "Security Policies, Regulations, and Standards",
+      [
+        "K023",
+        "F099"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      4,
+      "Cryptography. Encrypting and Hashing. Digital Signatures. Digital Certificates",
+      [
+        "S3",
+        "K027",
+        "K028",
+        "K029"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      5,
+      "Access Control. AAA: authentication, authorization, accounting",
+      [
+        "S3",
+        "K025",
+        "K026"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      6,
+      "Endpoint security. OS security. Antimalware. Host-based Intrusion Prevention",
+      [
+        "K024",
+        "S5",
+        "K026"
+      ],
+      "Частично — HIPS по названию не указан"
+    ],
+    [
+      "SEC",
+      7,
+      "Network Security. Firewalls. IDS. VPNs",
+      [
+        "K024",
+        "S5"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      8,
+      "Risk Assessment. Vulnerability Assessment",
+      [
+        "K023",
+        "K024",
+        "S3",
+        "F099"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      9,
+      "Security in Applications and Software Development",
+      [
+        "F103"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      10,
+      "Incident Response and Management",
+      [
+        "K023",
+        "S5"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Social Engineering; Threat Analysis",
+      [
+        "S3",
+        "K025"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Symmetric and Asymmetric Encryption",
+      [
+        "K027",
+        "K029"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Access Control; Endpoint Security; Network Security",
+      [
+        "K024",
+        "K026"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Risk Management; Incident Response",
+      [
+        "K023",
+        "S5"
+      ],
+      "Да"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Security Scanning Tools",
+      [
+        "F103"
+      ],
+      "Частично — сканеры кода (SAST/DAST, Snyk); сетевые сканеры (Nmap и т.п.) не указаны"
+    ],
+    [
+      "SEC",
+      "СРС",
+      "Security Operations Center",
+      [
+        "K023",
+        "S5"
+      ],
+      "Да"
+    ]
+  ],
+  "СВЯЗИ ИЗ СПИСКА ПОЛЬЗОВАТЕЛЯ": [
+    [
+      "CAP",
+      "F067",
+      "исследование, методология, обзор, результаты, выводы и Final Paper"
+    ],
+    [
+      "CAP",
+      "K030",
+      "группа курсов по управлению проектом"
+    ],
+    [
+      "CAP",
+      "K031",
+      "план, scope, документация"
+    ],
+    [
+      "CAP",
+      "P3",
+      "ход проекта, команда, отчётность"
+    ],
+    [
+      "CAP",
+      "K032",
+      "требования, проектирование, реализация и тестирование"
+    ],
+    [
+      "SEC",
+      "K033",
+      "путь по неделям 1–10, требует сверки с CLO1–CLO6"
+    ],
+    [
+      "SEC",
+      "K022",
+      "1–3, 4 по сопоставлению пользователя"
+    ],
+    [
+      "SEC",
+      "K023",
+      "3, 5, 8"
+    ],
+    [
+      "SEC",
+      "K024",
+      "7"
+    ],
+    [
+      "SEC",
+      "K034",
+      "курс 4 программы, неделя 9 по сопоставлению пользователя"
+    ],
+    [
+      "SEC",
+      "S3",
+      "1–2, 4–6, 8–9"
+    ],
+    [
+      "SEC",
+      "S5",
+      "6, 10"
+    ],
+    [
+      "SEC",
+      "K025",
+      "2, 5, 7"
+    ],
+    [
+      "SEC",
+      "S1",
+      "4, 6, 7"
+    ],
+    [
+      "QA",
+      "K035",
+      "специализация"
+    ],
+    [
+      "QA",
+      "K036",
+      "специализация"
+    ],
+    [
+      "QA",
+      "K037",
+      "специализация"
+    ],
+    [
+      "QA",
+      "K038",
+      "специализация"
+    ],
+    [
+      "QA",
+      "K039",
+      "специализация"
+    ],
+    [
+      "QA",
+      "K040",
+      "основы QA"
+    ],
+    [
+      "QA",
+      "K041",
+      "основы QA, планирование тестов"
+    ],
+    [
+      "QA",
+      "K042",
+      "планирование тестов"
+    ],
+    [
+      "QA",
+      "K043",
+      "Selenium"
+    ],
+    [
+      "QA",
+      "Q6",
+      "BDD, Cucumber"
+    ],
+    [
+      "QA",
+      "K044",
+      "производительность"
+    ],
+    [
+      "QA",
+      "K045",
+      "производительность"
+    ],
+    [
+      "QA",
+      "Q8",
+      "производительность"
+    ],
+    [
+      "QA",
+      "K046",
+      "API-тестирование"
+    ],
+    [
+      "QA",
+      "K018",
+      "API-тестирование"
+    ],
+    [
+      "QA",
+      "K047",
+      "API-тестирование"
+    ],
+    [
+      "QA",
+      "F017",
+      "юнит-тесты, моки"
+    ],
+    [
+      "QA",
+      "K048",
+      "юнит-тесты, моки"
+    ],
+    [
+      "QA",
+      "K049",
+      "Selenium"
+    ],
+    [
+      "QA",
+      "K017",
+      "Selenium"
+    ],
+    [
+      "QA",
+      "Q7",
+      "API-тестирование"
+    ],
+    [
+      "UML",
+      "F041",
+      "1"
+    ],
+    [
+      "UML",
+      "K050",
+      "1"
+    ],
+    [
+      "UML",
+      "U3",
+      "2, 3, 6, 8, 9"
+    ],
+    [
+      "UML",
+      "F043",
+      "2, 3, 4"
+    ],
+    [
+      "UML",
+      "U1",
+      "4, 5, 6"
+    ],
+    [
+      "UML",
+      "U2",
+      "7, 8"
+    ],
+    [
+      "UML",
+      "K051",
+      "7"
+    ],
+    [
+      "UML",
+      "K011",
+      "8"
+    ],
+    [
+      "UML",
+      "K052",
+      "серия из четырёх курсов Alberta"
+    ],
+    [
+      "UML",
+      "K053",
+      "специализация OOAD"
+    ],
+    [
+      "GO",
+      "K054",
+      "1"
+    ],
+    [
+      "GO",
+      "G1",
+      "1"
+    ],
+    [
+      "GO",
+      "K055",
+      "1, 3"
+    ],
+    [
+      "GO",
+      "F052",
+      "2, 3"
+    ],
+    [
+      "GO",
+      "K011",
+      "2"
+    ],
+    [
+      "GO",
+      "K056",
+      "4, 5. Пример на C#"
+    ],
+    [
+      "GO",
+      "K057",
+      "4. Часы всей специализации, пример на C#"
+    ],
+    [
+      "GO",
+      "U2",
+      "5"
+    ],
+    [
+      "GO",
+      "G3",
+      "6. Пример на C#"
+    ],
+    [
+      "GO",
+      "U3",
+      "6"
+    ],
+    [
+      "GO",
+      "K058",
+      "7, 8"
+    ],
+    [
+      "GO",
+      "K059",
+      "7, 8. Известны 11 ч одного из трёх курсов"
+    ],
+    [
+      "GO",
+      "K060",
+      "9"
+    ],
+    [
+      "GO",
+      "K061",
+      "9"
+    ],
+    [
+      "GO",
+      "K012",
+      "9"
+    ],
+    [
+      "GO",
+      "K062",
+      "серия из четырёх курсов Edureka"
+    ],
+    [
+      "GO",
+      "K063",
+      "специализация UC Irvine"
+    ]
+  ]
+}
