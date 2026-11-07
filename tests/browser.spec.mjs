@@ -333,17 +333,53 @@ test('browser bridge updates captured visible-page progress automatically withou
  await expect(page.locator('#last-progress-check')).not.toContainText(/синхронизировано/i);
  await page.evaluate(()=>window.postMessage({channel:'course-by-course',type:'PROGRESS_CHANGED',payload:{
   version:1,enabled:true,capturedAt:new Date().toISOString(),
-  rows:[{courseId:'U1',status:'done'},{courseId:'Q2',status:'active',percent:70}],ambiguous:[],unmatched:[]
+  rows:[{courseId:'U1',status:'done'},{courseId:'U3',status:'done',certificateUrl:'https://www.coursera.org/account/accomplishments/verify/AUTORESULT123'},{courseId:'Q2',status:'active',percent:70}],ambiguous:[],unmatched:[]
  }},location.origin));
  await expect(page.locator('.stats>div').first()).toContainText('2 / 28');
  await page.goto('./#courses');
  await expect(page.locator('[data-course="U1"] .status')).toContainText('Пройден');
  await expect(page.locator('[data-course="Q2"] .course-progress-label')).toContainText('70%');
+ await expect(page.locator('[data-course="U3"] a.primary')).toHaveAttribute('href','https://www.coursera.org/account/accomplishments/verify/AUTORESULT123');
  await expect(page.locator('[data-course]')).toHaveCount(109);
  await page.reload();
  await expect(page.locator('[data-course="U3"] .status')).toContainText('Пройден');
  await expect(page.locator('[data-course="U1"] .status')).toContainText('Пройден');
  await expect(page.locator('[data-course="Q2"] .course-progress-label')).toContainText('70%');
+ await expect(page.locator('[data-course="U3"] a.primary')).toHaveAttribute('href','https://www.coursera.org/account/accomplishments/verify/AUTORESULT123');
+});
+
+test('collapsible sidebar preserves focus, progress and preference across routes and mobile layouts',async({page})=>{
+ await page.emulateMedia({colorScheme:'light',reducedMotion:'reduce'});
+ await page.goto('./#courses');
+ const logo=page.locator('.sidebar .brand-symbol');
+ await expect.poll(()=>logo.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+ await page.locator('[data-course="U3"] [data-action="status"]').click();
+ await page.locator('#search').fill('Software Architecture');
+ await page.getByRole('button',{name:'Свернуть панель',exact:true}).click();
+ await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
+ await expect(page.getByRole('button',{name:'Развернуть панель',exact:true})).toBeFocused();
+ await expect(page.locator('#search')).toHaveValue('Software Architecture');
+ expect((await page.locator('.sidebar').boundingBox()).width).toBeLessThan(90);
+ await page.locator('.sidebar nav').getByRole('link',{name:'Сертификаты',exact:true}).click();
+ await expect(page.locator('h1')).toHaveText('Сертификаты');
+ expect((await page.locator('.topbar').boundingBox()).height).toBeLessThanOrEqual(60);
+ expect((await page.locator('.certificate-heading').boundingBox()).height).toBeLessThan(90);
+ await page.screenshot({path:'test-results/sidebar-collapsed-light.png',animations:'disabled'});
+ await page.reload();await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
+ await page.getByRole('button',{name:'Развернуть панель',exact:true}).focus();await page.keyboard.press('Enter');
+ await expect(page.locator('#app')).toHaveAttribute('data-sidebar','expanded');
+ await page.locator('[data-action="theme"]').click();
+ await page.screenshot({path:'test-results/sidebar-expanded-dark.png',animations:'disabled'});
+ await page.getByRole('button',{name:'Свернуть панель',exact:true}).click();
+ await page.setViewportSize({width:360,height:800});
+ await expect(page.locator('.sidebar-toggle')).toBeHidden();
+ for(const link of await page.locator('.sidebar nav a').all()){await expect(link).toBeVisible();const box=await link.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(801);}
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.screenshot({path:'test-results/certificates-mobile-dark.png',animations:'disabled'});
+ await page.locator('.sidebar nav').getByRole('link',{name:'Курсы',exact:true}).click();
+ await expect(page.locator('[data-course="U3"] .status')).toContainText('В процессе');
+ await page.setViewportSize({width:1440,height:1000});
+ await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
 });
 
 test('custom course filter has themed options and complete keyboard and mouse selection',async({page})=>{

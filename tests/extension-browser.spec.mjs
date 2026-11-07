@@ -137,6 +137,34 @@ test('extension DOM discovery: an unknown active course keeps its actual 67 perc
   expect(parsed.matches).toEqual(expect.arrayContaining([expect.objectContaining({courseId:parsed.courses[0].id,status:'active',percent:67})]));
 });
 
+test('extension certificate link in a visible course button is captured automatically',async({page})=>{
+ await useMockedLearningPage(page,{html:'<article><a href="/learn/software-architecture">Software Architecture</a><button data-certificate-url="/account/accomplishments/verify/BUTTONCERT123">View certificate</button></article>'});
+ await expect.poll(()=>page.evaluate(()=>window.__extensionCaptures.at(-1)?.parsed.matches[0]?.certificateUrl)).toBe('https://www.coursera.org/account/accomplishments/verify/BUTTONCERT123');
+});
+
+test('extension reads an opened personal certificate and ignores recommended courses',async({page})=>{
+ const url='https://www.coursera.org/account/accomplishments/verify/PAGECERT123?share=1';
+ await useMockedLearningPage(page,{url,tabsHTML:'',html:'<section><h2>Software Architecture</h2><a href="/learn/software-architecture">View course</a><p>Completed by Example Learner</p></section><section aria-label="Recommended courses"><h2>Object-Oriented Design</h2><a href="/learn/object-oriented-design">Object-Oriented Design</a></section>'});
+ await expect.poll(()=>page.evaluate(()=>window.__extensionCaptures.at(-1)?.parsed.matches)).toEqual([{courseId:'U3',title:'Software Architecture',status:'done',certificateUrl:url.split('?')[0]}]);
+});
+
+test('extension discovers a new course from its certificate but refuses an ambiguous page',async({page})=>{
+ const url='https://www.coursera.org/account/accomplishments/verify/NEWCERT123';
+ await useMockedLearningPage(page,{url,courses:[],tabsHTML:'',html:'<h2>Linear Algebra Foundations</h2><a href="/learn/linear-algebra-foundations">Linear Algebra Foundations</a>'});
+ await expect.poll(()=>page.evaluate(()=>window.__extensionCaptures.at(-1)?.parsed.matches.length)).toBe(1);
+ const parsed=await page.evaluate(()=>window.__extensionCaptures.at(-1).parsed);
+ expect(parsed.courses[0]).toMatchObject({title:'Linear Algebra Foundations',subjects:[],inPlan:false});
+ expect(parsed.matches[0].certificateUrl).toBe(url);
+ await page.evaluate(()=>{document.querySelector('main').innerHTML='<h1>Course certificate</h1><a href="/learn/first-course">First course</a><a href="/learn/second-course">Second course</a>';});
+ await expect.poll(()=>page.evaluate(()=>window.__extensionCaptures.at(-1)?.parsed.matches.length)).toBe(0);
+});
+
+test('extension refuses a certificate when the course heading and official URL disagree',async({page})=>{
+ await useMockedLearningPage(page,{url:'https://www.coursera.org/account/accomplishments/verify/CONFLICT123',tabsHTML:'',html:'<h2>Software Architecture</h2><a href="/learn/object-oriented-design">View course</a>'});
+ await expect.poll(()=>page.evaluate(()=>window.__extensionCaptures.length)).toBeGreaterThan(0);
+ expect(await page.evaluate(()=>window.__extensionCaptures.at(-1).parsed.matches)).toEqual([]);
+});
+
 test('extension popup fixture: consent, no-match diagnostics, completed counters and theme remain clear',async({page})=>{
   await page.setViewportSize({width:360,height:740});
   await page.emulateMedia({colorScheme:'light'});
@@ -155,8 +183,8 @@ test('extension popup fixture: consent, no-match diagnostics, completed counters
   });
   await page.route('https://extension-fixture.test/**',async route=>{
     const name=new URL(route.request().url()).pathname.slice(1);
-    if(!['popup.html','popup.css','popup.js','logo.svg'].includes(name))return route.abort();
-    const type={html:'text/html; charset=utf-8',css:'text/css',js:'text/javascript',svg:'image/svg+xml'}[name.split('.').at(-1)];
+    if(!['popup.html','popup.css','popup.js','logo.png'].includes(name))return route.abort();
+    const type={html:'text/html; charset=utf-8',css:'text/css',js:'text/javascript',png:'image/png'}[name.split('.').at(-1)];
     try{await route.fulfill({status:200,contentType:type,body:await readFile(new URL('../build/extension/'+name,import.meta.url))});}catch{await route.abort();}
   });
   await page.goto('https://extension-fixture.test/popup.html');

@@ -1,0 +1,8 @@
+Created with the built-in image_gen tool. Final selected PNG: brand-logo-source.png.
+
+Initial brief: One compact geometric Cyrillic К monogram for the personal course tracker «Курс за курсом», subtly suggesting consecutive learning steps. Crisp flat production app icon, readable at small sizes, a chamfered square tile and a transparent outer background. No words, slogans, book clipart, graduation cap or mockup.
+
+Final edit prompt:
+Recolor this exact PNG logo for the user's requested black, green and red brand palette. Preserve the precise K monogram geometry, stepped negative-space cut, chamfered square silhouette and transparent outer background. Tile interior: solid near-black charcoal #121614. K: solid clean medium bright green #62ce8c (not yellow, not lime). Add just one very small red #e66562 square nestled at the highest step of the negative-space stair, as a restrained progress marker. Flat opaque uniform fills inside the tile, no gradients, textures, glow, shadows or transparent holes. Do not add words. Keep the same composition and crisp edges. Output production PNG with transparent background outside the tile.
+
+scripts/build-brand.mjs prepares the smaller PNG files used by the website, favicon and browser extension from this source.

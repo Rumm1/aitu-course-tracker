@@ -1,4 +1,4 @@
-import {STORAGE_KEY,CATALOG_KEY,isCourseraLearningURL,canSetCaptureCatalog,validateCaptureCourses,getCaptureCatalog,mergeCapture,publicCapture} from './shared.js';
+import {STORAGE_KEY,CATALOG_KEY,isCourseraCaptureURL,canSetCaptureCatalog,validateCaptureCourses,getCaptureCatalog,mergeCapture,publicCapture} from './shared.js';
 import {canonicalCourseURL} from '../src/course-identity.js';
 
 let queue=Promise.resolve();
@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener((message,sender,respond)=>{
   let courseraSender=false;try{const url=new URL(sender.url||'');courseraSender=url.protocol==='https:'&&url.hostname==='www.coursera.org';}catch{}
   // sender.url may retain the document's initial URL after SPA routing. The
   // isolated content script supplies its current URL; both must be Coursera.
-  const learning=isCourseraLearningURL(sender.url||'')||courseraSender&&isCourseraLearningURL(message?.pageUrl||'');
+  const learning=isCourseraCaptureURL(sender.url||'')||courseraSender&&isCourseraCaptureURL(message?.pageUrl||'');
   if(message?.type==='CAPTURE'&&!learning)return false;
   if(message?.type==='SET_CATALOG'&&!canSetCaptureCatalog(sender,chrome.runtime.id))return false;
   if(['ENABLE','DISCONNECT'].includes(message?.type)&&!popup)return false;

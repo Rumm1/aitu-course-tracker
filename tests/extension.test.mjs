@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {parseProgressText} from '../src/progress-import.js';
-import {courseIdentity,inferLearningMode,isCourseraLearningURL,isTrackerURL,mergeCapture,publicCapture,readLearningDocument,readLearningCards,sanitizeCaptureRow} from '../extension/shared.js';
+import {courseIdentity,inferLearningMode,isCourseraLearningURL,isCourseraCaptureURL,isTrackerURL,mergeCapture,publicCapture,readLearningDocument,readLearningCards,sanitizeCaptureRow} from '../extension/shared.js';
 import {CATALOG_KEY,STORAGE_KEY,DEFAULT_CURATED,canSetCaptureCatalog,validateCaptureCourses,getCaptureCatalog,mergeDiscoveredCourses} from '../extension/shared.js';
 import {canonicalCourseURL,localCourseId} from '../src/course-identity.js';
 
@@ -20,6 +20,8 @@ test('extension permissions are limited and capture is opt-in',()=>{
 test('URL scopes reject other tabs and spoofed origins',()=>{
   assert(isCourseraLearningURL('https://www.coursera.org/my-learning?myLearningTab=COMPLETED'));
   for(const url of ['https://coursera.org.evil.test/my-learning','https://www.coursera.org/learn/software-architecture','http://www.coursera.org/my-learning','https://www.coursera.org/my-learning-other'])assert(!isCourseraLearningURL(url));
+  assert(isCourseraCaptureURL('https://www.coursera.org/account/accomplishments/verify/CERT123?share=1'));
+  for(const url of ['https://www.coursera.org/account/accomplishments','https://www.coursera.org/learn/software-architecture','https://coursera.org.evil.test/account/accomplishments/verify/CERT123','https://user:password@www.coursera.org/account/accomplishments/verify/CERT123'])assert(!isCourseraCaptureURL(url));
   assert(isTrackerURL('https://rumm1.github.io/aitu-course-tracker/#overview'));
   for(const url of ['https://rumm1.github.io/other/','https://rumm1.github.io.evil.test/aitu-course-tracker/','http://rumm1.github.io/aitu-course-tracker/'])assert(!isTrackerURL(url));
 });

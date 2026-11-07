@@ -53,6 +53,11 @@ try{
  assert.equal(response?.status(),200,'Public Pages response');
  await expect(page.locator('h1')).toHaveText('Мои курсы');
  await expect(page.locator('[data-course]')).toHaveCount(expectedCourses);
+ await expect.poll(()=>page.locator('.sidebar .brand-symbol').evaluate(image=>image.complete&&image.naturalWidth>0)).toBe(true);
+ await page.getByRole('button',{name:'Свернуть панель',exact:true}).click();
+ await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
+ await page.reload();await expect(page.locator('#app')).toHaveAttribute('data-sidebar','collapsed');
+ await page.getByRole('button',{name:'Развернуть панель',exact:true}).click();
  const subjectNames=(await page.locator('#subject option').evaluateAll(options=>options.filter(option=>option.value).map(option=>option.textContent.trim())));
  if(expectedCourses===109){
   for(const name of ['Capstone Project','Information Security','Software Quality Assurance and Testing','Software Architecture','Technology Entrepreneurship'])assert(subjectNames.includes(name),`English subject ${name} is absent`);
@@ -66,7 +71,9 @@ try{
  assert.equal(zipResponse.status(),200,'Extension ZIP is unavailable');
  const bytes=await zipResponse.body();assert(bytes.length>1000,'Extension ZIP is unexpectedly small');
  const manifest=JSON.parse(zipEntry(bytes,'manifest.json').toString('utf8'));
- assert.equal(manifest.version,'1.2.0','Unexpected extension release');
+ const expectedManifest=JSON.parse(await fs.readFile(new URL('../extension/manifest.json',import.meta.url),'utf8'));
+ assert.equal(manifest.version,expectedManifest.version,'Unexpected extension release');
+ assert.equal(zipEntry(bytes,'logo.png').subarray(1,4).toString(),'PNG','PNG logo is absent from the extension ZIP');
  const bridge=manifest.content_scripts.find(script=>script.js?.includes('tracker-content.js'));
  assert(bridge,'Extension tracker bridge is absent');
  assert.deepEqual(bridge.matches,[`${site.protocol}//${site.hostname}/*`]);

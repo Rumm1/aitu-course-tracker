@@ -17,6 +17,9 @@ const paths = {
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   mark: '<path d="M4 18V7c2.3-1.5 4.7-1.5 7 0v11c-2.3-1.5-4.7-1.5-7 0Zm7 0c2.3-1.5 4.7-1.5 7 0v-6m-5-1 7-7m-5 0h5v5"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
+  panel: '<rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M9 4v16m7-12-3 4 3 4"/>',
+  expand: '<rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M9 4v16m4-12 3 4-3 4"/>',
+  extension: '<path d="M9 4H4v5a3 3 0 1 1 0 6v5h5a3 3 0 1 1 6 0h5v-5a3 3 0 1 1 0-6V4h-5a3 3 0 1 0-6 0Z"/>',
   shield: '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/>',
   test: '<path d="M9 3h6m-5 0v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M8 14h8"/>',
   code: '<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16"/>',
@@ -24,5 +27,6 @@ const paths = {
 };
 
 export function icon(name, className = '') {
+  if(name==='mark')return `<img class="ui-icon brand-symbol ${className}" src="${import.meta.env?.BASE_URL||'./'}brand-logo.png" width="44" height="44" alt="" aria-hidden="true">`;
   return `<svg class="ui-icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.arrow}</svg>`;
 }

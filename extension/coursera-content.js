@@ -1,8 +1,8 @@
-import {STORAGE_KEY,CATALOG_KEY,getCaptureCatalog,isCourseraLearningURL,readLearningCards} from './shared.js';
+import {STORAGE_KEY,CATALOG_KEY,getCaptureCatalog,isCourseraCaptureURL,isCourseraCertificateURL,readLearningCards,readCertificatePage} from './shared.js';
 
 let scheduled=null,running=false,lastURL=location.href,lastAttempt=0;
 async function capture(){
-  if(running||document.hidden||!isCourseraLearningURL(location.href))return;
+  if(running||document.hidden||!isCourseraCaptureURL(location.href))return;
   running=true;lastAttempt=Date.now();let enabled=false;
   try{
     const stored=await chrome.storage.local.get([STORAGE_KEY,CATALOG_KEY]);
@@ -10,7 +10,7 @@ async function capture(){
     if(!state?.enabled)return;
     enabled=true;
     const courses=getCaptureCatalog(stored);
-    const parsed=readLearningCards(document,location.href,courses);
+    const parsed=isCourseraCertificateURL(location.href)?readCertificatePage(document,location.href,courses):readLearningCards(document,location.href,courses);
     // A zero-match check is still a result. Its reason must reach the popup
     // rather than leaving the user looking at an unexplained old zero count.
     await chrome.runtime.sendMessage({type:'CAPTURE',parsed,pageUrl:location.href});

@@ -17,6 +17,8 @@ export const DEFAULT_CURATED=TRACKER_URL==='https://rumm1.github.io/aitu-course-
 export function isCourseraLearningURL(input){
   try{const url=new URL(input);return url.protocol==='https:'&&url.hostname==='www.coursera.org'&&/^\/my-learning\/?$/.test(url.pathname);}catch{return false;}
 }
+export function isCourseraCertificateURL(input){return !!certificateURL(input,{url:'https://www.coursera.org/learn/course'});}
+export function isCourseraCaptureURL(input){return isCourseraLearningURL(input)||isCourseraCertificateURL(input);}
 export function isTrackerURL(input){
   try{const url=new URL(input);return url.origin===TRACKER_ORIGIN&&url.pathname.startsWith(TRACKER_PATH);}catch{return false;}
 }
@@ -173,6 +175,41 @@ function discoverCardCourse(link,scope,doc,input){
   return mergeDiscoveredCourses([],[candidate])[0];
 }
 
+function cardCertificateLinks(scope,doc,input,course){
+ const links=[];
+ for(const node of elements(scope,'a[href],[data-certificate-url],[data-certificate-link],button[data-href],button[data-url],[role="link"][data-href]')){
+  if(!visible(node,doc,scope))continue;
+  for(const name of ['href','data-certificate-url','data-certificate-link','data-href','data-url']){
+   const value=attribute(node,name);if(!value)continue;
+   try{const url=certificateURL(new URL(value,input).href,course);if(url)links.push(url);}catch{}
+  }
+ }
+ return [...new Set(links)];
+}
+
+export function readCertificatePage(doc,input,catalog){
+ const empty=message=>({matches:[],courses:[],ambiguous:[],unmatched:[],diagnostics:{section:'done',visibleCards:0,matchedCount:0,resultStatus:'no-matches',message}});
+ if(!isCourseraCertificateURL(input))return empty('Откройте персональную страницу сертификата Coursera.');
+ const root=doc.querySelector?.('main,[role="main"]')||doc.body;if(!root)return empty('Сертификат пока не загружен.');
+ const headings=elements(root,'h1,h2,h3,[role="heading"]').filter(node=>visible(node,doc,root)&&!recommendation(node,root)).map(node=>normalize(node.textContent));
+ const headingMatches=catalog.filter(course=>[course.title,...course.also||[]].some(title=>headings.includes(normalize(title))));
+ const linked=new Map(),discovered=new Map();
+ for(const link of elements(root,'a[href]')){
+  if(!visible(link,doc,root)||recommendation(link,root))continue;
+  const identity=courseIdentity(attribute(link,'href'),input);if(!identity)continue;
+  const known=catalog.filter(course=>courseIdentity(course.url)===identity);
+  if(known.length){for(const course of known)linked.set(course.id,course);}
+  else {const course=discoverCardCourse(link,link,doc,input);if(course){linked.set(course.id,course);discovered.set(course.id,course);}}
+ }
+ // A visible course URL and a known heading must agree. Never attach a
+ // certificate to a similarly named catalog entry with another address.
+ const candidates=linked.size?(headingMatches.length?headingMatches.filter(course=>linked.has(course.id)):[...linked.values()]):headingMatches;
+ if(candidates.length!==1)return empty(candidates.length?'Несколько курсов на странице. Ссылка не привязана: откройте сертификат конкретного курса.':'Не удалось определить курс сертификата. Откройте его из «Моего обучения».');
+ const course=candidates[0],url=certificateURL(input,course);
+ if(!url||/\/specialization\//.test(url)&&course.kind!=='specialization'||/\/professional-cert\//.test(url)&&course.kind!=='professional-certificate')return empty('Вид сертификата не совпадает с курсом.');
+ return {matches:[{courseId:course.id,title:course.title,status:'done',certificateUrl:url}],courses:discovered.has(course.id)?[discovered.get(course.id)]:[],ambiguous:[],unmatched:[],diagnostics:{section:'done',visibleCards:1,matchedCount:1,resultStatus:'success',message:'Персональная ссылка на сертификат найдена и сохранена.'}};
+}
+
 export function readLearningCards(doc,input,catalog){
   const empty=(resultStatus,message,section='mixed',visibleCards=0)=>({matches:[],courses:[],ambiguous:[],unmatched:[],warnings:[],diagnostics:{section,visibleCards,matchedCount:0,resultStatus,message}});
   if(!isCourseraLearningURL(input))return empty('not-learning','Откройте «Моё обучение» Coursera.');
@@ -216,14 +253,14 @@ export function readLearningCards(doc,input,catalog){
       const evidence=text.replace(/(?:^|\n)[^\n]*(?:grade|score|оценка|балл)[^\n]*%[^\n]*(?=\n|$)/giu,'\n');
       const parsed=parseProgressText(heading+courses[0].title+'\n'+evidence,courses,{mode});
       if(courses.length===1){
-        const urls=[...new Set(elements(scope,'a[href]').filter(link=>visible(link,doc,root)).map(link=>{try{return new URL(attribute(link,'href'),input).href;}catch{return '';}}).map(url=>certificateURL(url,courses[0])).filter(Boolean))];
+        const urls=cardCertificateLinks(scope,doc,input,courses[0]);
         // An actual personal certificate URL on this exact course card is
         // completion evidence even when Coursera exposes no selected-tab ARIA.
         if(urls.length===1){parsed.matches=[{courseId:courses[0].id,title:courses[0].title,status:'done',certificateUrl:urls[0]}];parsed.ambiguous=[];}
       }
       for(const row of parsed.matches){
         const course=captureCatalog.find(c=>c.id===row.courseId);
-        const urls=[...new Set(elements(scope,'a[href]').filter(link=>visible(link,doc,root)).map(link=>{try{return new URL(attribute(link,'href'),input).href;}catch{return '';}}).map(url=>certificateURL(url,course)).filter(Boolean))];
+        const urls=cardCertificateLinks(scope,doc,input,course);
         if(urls.length===1){row.certificateUrl=urls[0];row.status='done';delete row.percent;}
         const old=rows.get(row.courseId);rows.set(row.courseId,{...mergeRecord(old||{},row).next,courseId:row.courseId,title:course.title});
       }

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
-import {Resvg} from '@resvg/resvg-js';
+import {buildBrand} from './build-brand.mjs';
 import {DEFAULT_TRACKER_URL,resolveTrackerURL,trackerExtensionScope} from './tracker-url.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -12,7 +12,7 @@ await fs.mkdir(out,{recursive:true});
 await fs.mkdir(path.join(root,'public'),{recursive:true});
 const entries=['background','coursera-content','tracker-content'];
 await build({entryPoints:entries.map(name=>path.join(root,'extension',name+'.js')),outdir:out,bundle:true,format:'iife',platform:'browser',target:'chrome109',minify:true,legalComments:'none',define:{__TRACKER_URL__:JSON.stringify(tracker.url)}});
-for(const file of ['popup.css','popup.js','README.md','logo.svg'])await fs.copyFile(path.join(root,'extension',file),path.join(out,file));
+for(const file of ['popup.css','popup.js','README.md'])await fs.copyFile(path.join(root,'extension',file),path.join(out,file));
 const manifest=JSON.parse(await fs.readFile(path.join(root,'extension','manifest.json'),'utf8'));
 const trackerScript=manifest.content_scripts.find(script=>script.js?.includes('tracker-content.js'));
 if(!trackerScript)throw Error('В manifest.json не найден скрипт связи с трекером');
@@ -26,9 +26,7 @@ if(personalizedPopup===popup&&!popup.includes(`href="${tracker.url}"`))throw Err
 await fs.writeFile(path.join(out,'popup.html'),personalizedPopup);
 const instructions=await fs.readFile(path.join(out,'README.md'),'utf8');
 await fs.writeFile(path.join(out,'README.md'),instructions.replaceAll(DEFAULT_TRACKER_URL,tracker.url));
-await fs.mkdir(path.join(out,'icons'),{recursive:true});
-const logo=await fs.readFile(path.join(root,'extension','logo.svg'),'utf8');
-for(const size of [16,32,48,128])await fs.writeFile(path.join(out,'icons',`icon${size}.png`),new Resvg(logo,{fitTo:{mode:'width',value:size}}).render().asPng());
+await buildBrand(root,out);
 
 function crc32(data){let crc=0xffffffff;for(const byte of data){crc^=byte;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return (crc^0xffffffff)>>>0;}
 // Stored (uncompressed) ZIP uses no platform shell or external archiver.
@@ -44,7 +42,7 @@ function zip(files){
   const centralBytes=Buffer.concat(central),end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(files.length,8);end.writeUInt16LE(files.length,10);end.writeUInt32LE(centralBytes.length,12);end.writeUInt32LE(offset,16);
   return Buffer.concat([...locals,centralBytes,end]);
 }
-const names=[...entries.map(name=>name+'.js'),'manifest.json','popup.html','popup.css','popup.js','README.md','logo.svg',...[16,32,48,128].map(size=>`icons/icon${size}.png`)];
+const names=[...entries.map(name=>name+'.js'),'manifest.json','popup.html','popup.css','popup.js','README.md','logo.png',...[16,32,48,128].map(size=>`icons/icon${size}.png`)];
 const files=await Promise.all(names.map(async name=>({name,data:await fs.readFile(path.join(out,name))})));
 const target=path.join(root,'public','course-progress-extension.zip');
 await fs.writeFile(target,zip(files));
